@@ -1,0 +1,18 @@
+.w_100{
+    width: 100%;
+}
+.h_100{
+    height: 100%;
+}
+.po_r{
+    position: relative;
+}
+.po_a{
+    position: absolute;
+}
+.main_c{
+    color: #F0B33C;
+}
+.bgc_main{
+    background-color: #F0B33C;
+}
