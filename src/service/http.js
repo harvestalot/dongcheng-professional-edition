@@ -28,24 +28,16 @@ const errorHandle = (status, other) => {
     switch (status) {
         // 401: 未登录状态，跳转登录页
         case 401:
-            toLogin();
             break;
         // 403 token过期
         // 清除token并跳转登录页
         case 403:
-            // tip('登录过期，请重新登录');
-            localStorage.removeItem('token');
-            store.commit('loginSuccess', null);
-            setTimeout(() => {
-                toLogin();
-            }, 1000);
             break;
         // 404请求不存在
         case 404:
             // window.location.href='./visit_404.html';
             break;
         default:
-            console.log(other);
             break;
     }
 }
@@ -97,6 +89,29 @@ function handleParams (data) {
 }
 
 export default {
+    /*
+        获取本地json数据
+
+     * @param url
+     * @param response 请求成功时的回调函数
+     * @param exception 异常的回调函数
+     */
+    getLocalhostJson(url, response, exception){
+        axios({
+            method: 'get',
+            url: url,
+        }).then(
+            (result) => {
+                response(result.data)
+            }
+        ).catch(
+            (error) => {
+                if (exception) {
+                    exception(error)
+                }
+            }
+        )
+    },
     /*
      * @param url
      * @param data
