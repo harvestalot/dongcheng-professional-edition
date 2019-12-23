@@ -40,14 +40,24 @@ export default {
     },
     computed: {
     },
+    watch: { 
+        '$route.path':function(newVal,oldVal){
+            if(newVal){
+                this.resetMap();//重置地图
+            }
+        }
+    },
     mounted(){
         this.isMap = this.$refs.mainMapChild.base_map;
-        console.log(this.$refs.mainMapChild.base_map)
+        // console.log(this.$refs.mainMapChild.base_map)
         // this.http.get(this.ports.homePage.hotLine, res => {
         //     console.log(res)
         // })
     }, 
     methods: {
+        resetMap(){
+            this.isMap.clearMap();
+        }
     }
 };
 </script>

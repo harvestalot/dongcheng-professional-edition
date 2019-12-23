@@ -12,16 +12,24 @@ export default {
     components: {},
     data() {
         return {
+            mainMapLayer:this.$parent.base_map,
         };
     },
     computed: {},
     watch: {},
     methods: {},
-    created() {},
+    created() {
+        this.get_init_layer();
+    },
     mounted() {
         console.log(this.$parent.base_map)
     },
     methods:{
+        get_init_layer(){
+            this.boundaryLayer = new Loca.LineLayer({
+                map: this.mainMapLayer,
+            });
+        },
     }
 }
 </script>

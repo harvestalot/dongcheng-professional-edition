@@ -3,8 +3,6 @@
     <div class='side_nav'>
         <a-menu
           mode="inline"
-          :defaultSelectedKeys="['1']"
-          :defaultOpenKeys="['sub1']"
           :style="{ height: '100%', borderRight: 0 }"
         >
           <a-sub-menu key="sub1">

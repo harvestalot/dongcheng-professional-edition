@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/views/home'
+import Index from '@/views/index'
+import Home from '@/views/components/home'
 
 Vue.use(Router)
 
@@ -8,9 +9,15 @@ const router = new Router({
     routes: [
         {
             path: '/',
-            name: 'Home',
-            component: Home,
+            name: 'Index',
+            redirect: '/views',
+            component: Index,
             children:[
+                {
+                    path: 'views',
+                    name: 'Home',
+                    component: Home,
+                },
                 {
                     path: 'population_scale',
                     name: 'PopulationScale',
@@ -21,8 +28,25 @@ const router = new Router({
                     name: 'ConstructionScale',
                     component: () => import('components/scale/Construction.vue'),
                 },
-            ]
+            ] 
         },
+        // {
+        //     path: '/views',
+        //     name: 'Home',
+        //     component: Home,
+        //     children:[
+        //         {
+        //             path: 'population_scale',
+        //             name: 'PopulationScale',
+        //             component: () => import('components/scale/Population.vue'),
+        //         },
+        //         {
+        //             path: 'construction_scale',
+        //             name: 'ConstructionScale',
+        //             component: () => import('components/scale/Construction.vue'),
+        //         },
+        //     ] 
+        // }
     ]
 })
 
