@@ -1,10 +1,10 @@
 <!-- 主地图图层初始化 -->
 <template>
     <div class='h_100 po_r'>
-        <div id="main_map" class="h_100"></div>
-        <div class="po_a map_content">
+        <div id="main_map" class="h_100"><slot></slot></div>
+        <!-- <div class="po_a map_content">
             <slot></slot>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -37,9 +37,10 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-    // .map_content{
-    //     width: 100%;
-    //     height: 100%;
-
-    // }
+    .map_content{
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+    }
 </style>

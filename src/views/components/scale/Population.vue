@@ -1,7 +1,7 @@
 <!-- 人口规模 -->
-<template>
+<template class="h_100">
     <div class='po_r h_100'>
-        <div id="main_map" class="h_100"></div>
+        <div id="sub_main_map" class="h_100"></div>
     </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
     components: {},
     data() {
         return {
-            mainMapLayer:this.$parent.base_map,
+            mainMapLayer:"",
             boundaryLayer:"",
         };
     },
@@ -19,16 +19,25 @@ export default {
     watch: {},
     methods: {},
     created() {
-        this.get_init_layer();
-        this.get_boundary_layer();
     },
     mounted() {
+        this.init_map();
     },
     methods:{
+        init_map(){ //初始化地图
+            this.mainMapLayer = new AMap.Map("sub_main_map", {
+                mapStyle: 'amap://styles/4ab81766c3532896d5b265289c82cbc6',
+                resizeEnable:true,
+                center: [116.412255,39.908886],
+                zoom: 12,
+            });
+            this.get_init_layer();
+        },
         get_init_layer(){
             this.boundaryLayer = new Loca.LineLayer({
                 map: this.mainMapLayer,
             });
+            this.get_boundary_layer();
         },
         get_boundary_layer(){
             this.http.getLocalhostJson("../../../../static/json/boundary_data.json", res =>{

@@ -9,13 +9,16 @@
                     <a-col :span="24">头部</a-col>
                 </a-row>
                 <a-row class="h_92 po_r">
-                    <main-map ref="mainMapChild">
+                    <div class="h_100">
+                    <router-view></router-view>
+                    </div>
+                    <!-- <main-map ref="mainMapChild">
                         <template>
                             <div>
                                 <router-view v-if="isMap"></router-view>
                             </div>
                         </template>
-                    </main-map>
+                    </main-map> -->
                 </a-row>
             </a-col>
         </a-row>
@@ -36,6 +39,7 @@ export default {
     data () {
         return {
             isMap:"",
+            // base_map:"",
         };
     },
     computed: {
@@ -48,7 +52,7 @@ export default {
         }
     },
     mounted(){
-        this.isMap = this.$refs.mainMapChild.base_map;
+        // this.isMap = this.$refs.mainMapChild.base_map;
         // console.log(this.$refs.mainMapChild.base_map)
         // this.http.get(this.ports.homePage.hotLine, res => {
         //     console.log(res)
@@ -56,8 +60,8 @@ export default {
     }, 
     methods: {
         resetMap(){
-            this.isMap.clearMap();
-        }
+            // this.isMap.clearMap();
+        },
     }
 };
 </script>
