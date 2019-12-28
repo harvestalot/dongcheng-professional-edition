@@ -18,7 +18,6 @@ Vue.use(Antd);
 
 // Vue.prototype.$Axios = Axios
 
-
 import http from './service/http.js'
 import ports from './service/ports_api.js'
 Vue.prototype.http = http

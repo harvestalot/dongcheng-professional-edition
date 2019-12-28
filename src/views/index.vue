@@ -9,16 +9,12 @@
                     <a-col :span="24">头部</a-col>
                 </a-row>
                 <a-row class="h_92 po_r">
-                    <div class="h_100">
-                    <router-view></router-view>
-                    </div>
-                    <!-- <main-map ref="mainMapChild">
-                        <template>
-                            <div>
-                                <router-view v-if="isMap"></router-view>
-                            </div>
+                    <main-map ref="mainMapChild">
+                        <template v-slot="params">
+                            <router-view v-if="isRouterAlive"></router-view>
                         </template>
-                    </main-map> -->
+                    </main-map>
+                    <!-- <a-spin size="large" :spinning="spinning"/> -->
                 </a-row>
             </a-col>
         </a-row>
@@ -29,17 +25,23 @@
 </template>
 
 <script>
-import SideNav from "./components/SideNav"
-import MainMap from "./components/MainMap"
+import SideNav from "./components/common/SideNav"
+import MainMap from "./components/common/MainMap"
 export default {
+    provide(){
+        return {
+            reload: this.reload,
+            // streetBoundaryLayer: this.mapLayer.streetBoundary,
+        }
+    },
     components:{
         SideNav,
         MainMap
     },
     data () {
         return {
-            isMap:"",
-            // base_map:"",
+            isRouterAlive:true,
+            spinning:true,
         };
     },
     computed: {
@@ -47,21 +49,24 @@ export default {
     watch: { 
         '$route.path':function(newVal,oldVal){
             if(newVal){
-                this.resetMap();//重置地图
+                this.reload();//刷新页面
             }
         }
     },
     mounted(){
-        // this.isMap = this.$refs.mainMapChild.base_map;
-        // console.log(this.$refs.mainMapChild.base_map)
-        // this.http.get(this.ports.homePage.hotLine, res => {
-        //     console.log(res)
-        // })
+        this.reload();
     }, 
     methods: {
         resetMap(){
-            // this.isMap.clearMap();
+            this.$refs.mainMapChild.mapLayerOption.base.clearMap();//重置地图
         },
+        reload(){
+            this.isRouterAlive = false;
+            this.$nextTick( () => {
+                this.isRouterAlive = true;
+                this.resetMap();
+            })
+        }
     }
 };
 </script>

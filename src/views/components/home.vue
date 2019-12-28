@@ -1,7 +1,6 @@
 <!-- 主页面 -->
 <template>
     <div class='po_r h_100'>
-        <div id="main_map" class="h_100"></div>
     </div>
 </template>
 
@@ -11,7 +10,9 @@ export default {
     components: {},
     data() {
         return {
-            base_map:"",
+            mainMapLayer: this.$parent.mapLayerOption.base,
+            streetBoundaryLayer: this.$parent.mapLayerOption.streetBoundary,
+            streetNameLayer: this.$parent.mapLayerOption.streetName,
         };
     },
     computed: {},
@@ -19,16 +20,32 @@ export default {
     created() {
     },
     mounted() {
-        this.init_map();
+        this.get_init_layer();
     },
     methods: {
-        init_map(){ //初始化地图
-            this.base_map = new AMap.Map("main_map", {
-                mapStyle: 'amap://styles/4ab81766c3532896d5b265289c82cbc6',
-                resizeEnable:true,
-                center: [116.412255,39.908886],
-                zoom: 12,
-            });
+        get_init_layer(){
+            this.get_street_name_layer();
+        },
+        get_street_name_layer(){//社区名字文字图层
+            this.http.getLocalhostJson("../../../../static/json/street_name_data.json", res =>{
+                //添加文字标记图层
+                this.streetNameLayer.setData(res, {
+                    lnglat: 'lnglat'
+                }).setOptions({
+                    style: {
+                        direction: 'center',
+                        offset: [0, 0],
+                        text: function (item) {
+                            return item.value.name;
+                        },
+                        fillColor: "#F319A0",
+                        fontSize: 16,
+                        strokeWidth: 0
+                    }
+                }).render();
+                this.streetNameLayer.setzIndex(100);
+                this.streetNameLayer.show();
+            })
         }
     },
 }
