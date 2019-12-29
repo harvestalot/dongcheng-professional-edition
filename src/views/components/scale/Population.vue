@@ -28,7 +28,6 @@ export default {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
             heatLayer: this.$parent.viewLayerOption.heat,
-            iconLayer: this.$parent.viewLayerOption.Icon,
         };
     },
     computed: {},
@@ -37,8 +36,6 @@ export default {
     methods: {},
     created() {},
     mounted() {
-        this.heatLayer? this.heatLayer.hide():"";
-        // this.iconLayer? this.iconLayer.hide():"";
     },
     methods:{
         onChangeLayer(value){//改变图层

@@ -48,14 +48,12 @@ export default {
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
-            heatLayer: this.$parent.viewLayerOption.heat,
             markers:[],
         };
     },
     computed: {},
     watch: {},
     mounted() {
-        this.heatLayer? this.heatLayer.hide():"";
         this.get_cultural_heritage_layer();
         this.get_historical_building_layer();
     },

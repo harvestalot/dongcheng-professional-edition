@@ -23,9 +23,6 @@ export default {
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
-            heatLayer: this.$parent.viewLayerOption.heat,
-            polygonLayer: this.$parent.viewLayerOption.polygon,
-            trafficLayer: this.$parent.viewLayerOption.traffic,
 	        all_poi_type: ["餐饮服务", "购物服务", "生活服务", "体育休闲服务",
 		        "商务住宅", "科教文化服务", "交通设施服务", "金融保险服务", "公共设施"],
 	        current_pio_type: "餐饮服务",
@@ -34,10 +31,6 @@ export default {
     computed: {},
     watch: {},
     mounted() {
-        this.heatLayer? this.heatLayer.hide():"";
-        this.polygonLayer? this.polygonLayer.hide():"";
-        // this.trafficLayer? this.mainMapLayer.remove(this.trafficLayer):"";
-        this.trafficLayer? this.trafficLayer.hide():"";
         this.get_dongcheng_polygon_layer();
     },
     methods: {

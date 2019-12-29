@@ -35,14 +35,12 @@ export default {
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
-            heatLayer: this.$parent.viewLayerOption.heat,
             markers:[],
         };
     },
     computed: {},
     watch: {},
     created() {
-        this.heatLayer? this.heatLayer.hide():"";
         this.get_traffic_layer();
     },
     methods: {

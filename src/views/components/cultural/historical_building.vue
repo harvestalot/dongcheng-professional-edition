@@ -44,15 +44,12 @@ export default {
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
-            heatLayer: this.$parent.viewLayerOption.heat,
             markers:[],
         };
     },
     computed: {},
     watch: {},
     mounted() {
-        console.log(this.$Basice.data_server_url)
-        this.heatLayer? this.heatLayer.hide():"";
         this.get_historical_building_layer();
         // this.http.get("banner/getBannerList", { type:"VIGOUR" }, res =>{
         //     if(res.success){

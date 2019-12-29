@@ -99,7 +99,7 @@ export default {
                     style: {
                         // opacity: 0.5,
                         color: function (item) {
-                            var land_name = item.value.land_type;
+                            var land_name = item.value.type;
                             var color = colors[0];
                             switch (land_name){
                                 case "商业服务业设施用地" :

@@ -16,16 +16,12 @@ export default {
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
-            heatLayer: this.$parent.viewLayerOption.heat,
-            polygonLayer: this.$parent.viewLayerOption.polygon,
             markers:[],
         };
     },
     computed: {},
     watch: {},
     mounted() {
-        this.heatLayer? this.heatLayer.hide():"";
-        this.polygonLayer? this.polygonLayer.hide():"";
         this.get_Hutong_sanitation_layer();
     },
     methods: {

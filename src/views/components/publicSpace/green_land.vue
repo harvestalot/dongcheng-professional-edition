@@ -28,15 +28,11 @@ export default {
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
-            heatLayer: this.$parent.mapLayerOption.heat,
-            polygonLayer: this.$parent.viewLayerOption.polygon,
         };
     },
     computed: {},
     watch: {},
     mounted() {
-        this.heatLayer? this.heatLayer.hide():"";
-        this.polygonLayer? this.polygonLayer.hide():"";
         this.get_green_land_layer();
     },
     methods: {

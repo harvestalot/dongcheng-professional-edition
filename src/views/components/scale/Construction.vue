@@ -26,9 +26,7 @@ export default {
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
-            heatLayer: this.$parent.viewLayerOption.heat,
             polygonLayer: this.$parent.viewLayerOption.polygon,
-            trafficLayer: this.$parent.viewLayerOption.traffic,
         };
     },
     computed: {},
@@ -37,8 +35,6 @@ export default {
     created() {
     },
     mounted() {
-        this.heatLayer? this.heatLayer.hide():"";
-        this.trafficLayer? this.trafficLayer.hide():"";
     },
     methods:{
         onChangeLayer(value){//改变图层

@@ -16,13 +16,11 @@ export default {
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
-            heatLayer: this.$parent.viewLayerOption.heat,
         };
     },
     computed: {},
     watch: {},
     mounted() {
-        this.heatLayer? this.heatLayer.hide():"";
         this.get_cultural_activities_layer();
     },
     methods: {
