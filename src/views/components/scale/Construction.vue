@@ -27,6 +27,8 @@ export default {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
             heatLayer: this.$parent.viewLayerOption.heat,
+            polygonLayer: this.$parent.viewLayerOption.polygon,
+            trafficLayer: this.$parent.viewLayerOption.traffic,
         };
     },
     computed: {},
@@ -36,15 +38,16 @@ export default {
     },
     mounted() {
         this.heatLayer? this.heatLayer.hide():"";
+        this.trafficLayer? this.trafficLayer.hide():"";
     },
     methods:{
         onChangeLayer(value){//改变图层
             switch (value){
                 case "1" :
-                    this.get_resident_population_layer();
+                    this.get_buildings_volume_ratio_layer();
                     break;
                 case "2" :
-                    this.get_employed_population_layer();
+                    this.get_buildings_density_layer();
                     break;
                 case "3" :
                     this.get_resident_population_employment_place_layer();
@@ -59,40 +62,38 @@ export default {
                     this.heatLayer.hide();
             }
         },
-        get_resident_population_layer(){//居住人口热力图层
-            this.http.getLocalhostJson("../../../../static/json/scale/resident_population.json", res =>{
-                this.heatLayer.setData(res, {
-                    lnglat: "lnglat",
-                    // // 或者使用回调函数构造经纬度坐标
-                    //  lnglat: function (obj) {
-                    //     if (obj.value) {
-                    //          var value = obj.value;
-                    //          var lnglat = [value['X'], value['Y']];
-                    //          return lnglat;
-                    //     }
-                    //  },
-                    // // 指定数据类型
-                    // type: 'csv'
-                });
-                this.heatLayer.setOptions({
+        get_buildings_volume_ratio_layer(){//建筑容积率图层
+            this.http.getLocalhostJson("../../../../static/json/scale/buildings_volume_ratio_and_density.json", res =>{
+                this.polygonLayer.setData(res,{lnglat: 'lnglat'});
+                this.polygonLayer.setOptions({
                     style: {
-                        radius: 16,
-                        color: {
-                            0.5: '#2c7bb6',
-                            0.65: '#abd9e9',
-                            0.7: '#ffffbf',
-                            0.9: '#fde468',
-                            1.0: '#d7191c'
+                        // opacity: 0.5,
+                        color: function (item) {
+                            // var land_name = item.value.type;
+                            // var color = colors[0];
+                            // switch (land_name){
+                            //     case "公园" :
+                            //         color = colors[1];
+                            //         break;
+                            //     case "绿地" :
+                            //         color = colors[2];
+                            //         break;
+                            //     default:
+                            //         color = colors[0];
+                            // }
+                            return "#1afa29";
                         },
-                        // opacity:[0.3,0.7]
+                        height: function () {
+                            return Math.random() * 500 + 100;
+                        }
                     }
                 });
-                this.heatLayer.render();
-                this.heatLayer.show();
+                this.polygonLayer.render();
+                this.polygonLayer.show();
             })
         },
-        get_resident_population_employment_place_layer(){//居住人口就业地热力图层
-            this.http.getLocalhostJson("../../../../static/json/scale/resident_population_employment_place.json", res =>{
+        get_buildings_density_layer(){//建筑密度图层
+            this.http.getLocalhostJson("../../../../static/json/scale/buildings_volume_ratio_and_density.json", res =>{
                 this.heatLayer.setData(res, {
                     lnglat: "lnglat",
                 });

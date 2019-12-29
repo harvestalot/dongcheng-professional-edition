@@ -24,33 +24,33 @@
           </a-sub-menu>
           <a-sub-menu key="Cultural">
             <span slot="title">文化资源评估</span>
-            <a-menu-item key="9">概览</a-menu-item>
-            <a-menu-item key="10">物质文化遗产</a-menu-item>
-            <a-menu-item key="11">历史建筑</a-menu-item>
+            <a-menu-item key="OverviewCultural"><router-link :to="{ name: 'OverviewCultural' }">概览</router-link></a-menu-item>
+            <a-menu-item key="HeritageCultural"><router-link :to="{ name: 'HeritageCultural' }">物质文化遗产</router-link></a-menu-item>
+            <a-menu-item key="HistoricalBuildingCultural"><router-link :to="{ name: 'HistoricalBuildingCultural' }">历史建筑</router-link></a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="Monitor">
             <span slot="title">街区活力监测</span>
-            <a-menu-item key="9">人流量监测</a-menu-item>
-            <a-menu-item key="10">文化活动监测</a-menu-item>
+            <a-menu-item key="PeopleMonitor"><router-link :to="{ name: 'PeopleMonitor' }">人流量监测</router-link></a-menu-item>
+            <a-menu-item key="CulturalActivitiesMonitor"><router-link :to="{ name: 'CulturalActivitiesMonitor' }">文化活动监测</router-link></a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="PublicSpace">
             <span slot="title">公共空间品质评估</span>
-            <a-menu-item key="9">公园绿地</a-menu-item>
-            <a-menu-item key="10">胡同环卫设施</a-menu-item>
+            <a-menu-item key="GreenLandPublicSpace"><router-link :to="{ name: 'GreenLandPublicSpace' }">公园绿地</router-link></a-menu-item>
+            <a-menu-item key="HutongSanitationPublicSpace"><router-link :to="{ name: 'HutongSanitationPublicSpace' }">胡同环卫设施</router-link></a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="Industry">
             <span slot="title">产业结构</span>
-            <a-menu-item key="9">产业聚集度</a-menu-item>
-            <a-menu-item key="10">产业发展</a-menu-item>
+            <a-menu-item key="AggregationDegreeIndustry"><router-link :to="{ name: 'AggregationDegreeIndustry' }">产业聚集度</router-link></a-menu-item>
+            <a-menu-item key="DevelopingIndustry"><router-link :to="{ name: 'DevelopingIndustry' }">产业发展</router-link></a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="Traffic">
             <span slot="title">道路交通</span>
-            <a-menu-item key="9">交通路况监测</a-menu-item>
-            <a-menu-item key="10">停车场</a-menu-item>
+            <a-menu-item key="RoadConditionTraffic"><router-link :to="{ name: 'RoadConditionTraffic' }">交通路况监测</router-link></a-menu-item>
+            <a-menu-item key="ParkingTraffic"><router-link :to="{ name: 'ParkingTraffic' }">停车场</router-link></a-menu-item>
           </a-sub-menu>
           <a-sub-menu key="Feedback">
             <span slot="title">公众反馈</span>
-            <a-menu-item key="9">社区问题反馈</a-menu-item>
+            <a-menu-item key="CommunityProblemFeedback"><router-link :to="{ name: 'CommunityProblemFeedback' }">社区问题反馈</router-link></a-menu-item>
           </a-sub-menu>
         </a-menu>
     </div>
@@ -106,10 +106,18 @@ export default {
         .ant-menu{
             background-color:transparent!important;
             .ant-menu-submenu-title{
-                font-size: 16px!important;
-                font-weight: 700;
-                color: #222;
+              margin-top: 0;
+              margin-bottom: 0;
+              font-size: 16px!important;
+              font-weight: 700;
+              color: #222;
             }
+            .ant-menu-item{
+              margin-top: 0;
+            }
+        }
+        .ant-menu-inline .ant-menu-item:not(:last-child){
+          margin-bottom: 0;
         }
     }
 </style>

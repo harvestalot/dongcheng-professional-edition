@@ -53,8 +53,73 @@ const router = new Router({
                     name: 'SportsFacilities',
                     component: () => import('components/facilities/sports.vue'),
                 },
+                {
+                    path: 'overview_cultural',
+                    name: 'OverviewCultural',
+                    component: () => import('components/cultural/overview.vue'),
+                },
+                {
+                    path: 'heritage_cultural',
+                    name: 'HeritageCultural',
+                    component: () => import('components/cultural/cultural_heritage.vue'),
+                },
+                {
+                    path: 'historical_building_cultural',
+                    name: 'HistoricalBuildingCultural',
+                    component: () => import('components/cultural/historical_building.vue'),
+                },
+                {
+                    path: 'people_monitor',
+                    name: 'PeopleMonitor',
+                    component: () => import('components/monitor/people.vue'),
+                },
+                {
+                    path: 'cultural_activities_monitor',
+                    name: 'CulturalActivitiesMonitor',
+                    component: () => import('components/monitor/cultural_activities.vue'),
+                },
+                {
+                    path: 'green_land_public_space',
+                    name: 'GreenLandPublicSpace',
+                    component: () => import('components/publicSpace/green_land.vue'),
+                },
+                {
+                    path: 'Hutong_sanitation_public_space',
+                    name: 'HutongSanitationPublicSpace',
+                    component: () => import('components/publicSpace/Hutong_sanitation.vue'),
+                },
+                {
+                    path: 'aggregation_degree_industry',
+                    name: 'AggregationDegreeIndustry',
+                    component: () => import('components/industry/aggregation_degree.vue'),
+                },
+                {
+                    path: 'developing_industry',
+                    name: 'DevelopingIndustry',
+                    component: () => import('components/industry/developing.vue'),
+                },
+                {
+                    path: 'road_condition_traffic',
+                    name: 'RoadConditionTraffic',
+                    component: () => import('components/traffic/road_condition.vue'),
+                },
+                {
+                    path: 'parking_traffic',
+                    name: 'ParkingTraffic',
+                    component: () => import('components/traffic/parking.vue'),
+                },
+                {
+                    path: 'community_problem',
+                    name: 'CommunityProblemFeedback',
+                    component: () => import('components/feedback/community_problem.vue'),
+                },
             ] 
         },
+        {
+            path: '/about_us',
+            name: 'AboutUs',
+            component: () => import('components/about_us.vue'), 
+        }
     ]
 })
 

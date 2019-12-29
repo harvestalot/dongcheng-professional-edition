@@ -47,12 +47,13 @@ export default {
 <style lang='less'>
     .map_tool{
         position: absolute;
-        left: 0;
-        top: 0;
+        left: 5px;
+        top: 5px;
         width: 110px;
         padding: 10px 10px;
         box-sizing: border-box;
         background-color: rgba(0,0,0,.5);
+        box-shadow: 0px 0px 8px 0px rgba(188, 142, 94, 1);
         .ant-checkbox-wrapper{
             margin-top: 5px;
             font-size: 12px;

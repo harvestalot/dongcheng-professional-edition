@@ -20,8 +20,10 @@ Vue.use(Antd);
 
 import http from './service/http.js'
 import ports from './service/ports_api.js'
+import basice from './assets/js/basice.js'
 Vue.prototype.http = http
 Vue.prototype.ports = ports
+Vue.prototype.$Basice = basice
 
 /* eslint-disable no-new */
 new Vue({

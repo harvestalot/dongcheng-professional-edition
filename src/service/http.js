@@ -57,9 +57,9 @@ function handleResults (response) {
             results: []
         }
     }
-    if (remoteResponse.success) {
-        result.data.results = remoteResponse.data
-        result.data.total = remoteResponse.total
+    if (remoteResponse.resultCode === "10000") {
+        result.data.results = JSON.parse(Decrypt(remoteResponse.data.resultKey))
+        // result.data.total = remoteResponse.total
         result.success = true
     }
     if (!remoteResponse.success) {
@@ -70,12 +70,12 @@ function handleResults (response) {
         result.errorCode = remoteResponse.errorCode
         result.message = remoteResponse.message
     }
-    // return result
-    return remoteResponse
+    return result
+    // return remoteResponse
 }
 
 function handleUrl (url) {
-    url = BASE_URL + url    
+    url = "http://114.64.228.103:8902/" + url    
 // BASE_URL是接口的ip前缀，比如http:10.100.1.1:8989/
     return url
 }
@@ -147,10 +147,11 @@ export default {
      * @param response 请求成功时的回调函数
      * @param exception 异常的回调函数
      */
-    get (url, response, exception) {
+    get (url, data, response, exception) {
         axios({
             method: 'get',
             url: handleUrl(url),
+            params: handleParams(data),
             timeout: TIME_OUT_MS,
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8'

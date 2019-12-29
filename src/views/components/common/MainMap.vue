@@ -1,7 +1,7 @@
 <!-- 主地图图层初始化 -->
 <template>
     <div class='h_100 po_r'>
-        <div id="main_map" class="h_100"></div>
+        <div id="main_map" class="w_100 h_100"></div>
         <slot :map="mapLayerOption"></slot>
         <tool :toolOption="toolOption" v-if="toolOption.isConfig"></tool>
     </div>
@@ -26,6 +26,9 @@ export default {
             viewLayerOption:{//页面图层
                 heat:"",
                 Icon:"",
+                polygon:"",
+                pointCloud:"",
+                traffic:"",
             },
             toolOption:{
                 isConfig:true,
@@ -69,8 +72,20 @@ export default {
                 map: this.mapLayerOption.base,
                 // zIndex: 15,
             });
+            this.viewLayerOption.polygon = new Loca.PolygonLayer({//平面图层
+                map: this.mapLayerOption.base,
+                // zIndex: 15,
+            });
             this.viewLayerOption.Icon = new Loca.IconLayer({
                 map: this.mapLayerOption.base
+            });
+            this.viewLayerOption.pointCloud = new Loca.PointCloudLayer({
+                map: this.mapLayerOption.base,
+                // fitView: false
+            });
+            this.viewLayerOption.traffic = new AMap.TileLayer.Traffic({
+                autoRefresh:true,
+                interval:3600,
             });
             this.get_street_boundary_layer();
         },

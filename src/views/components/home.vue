@@ -1,6 +1,6 @@
 <!-- 主页面 -->
 <template>
-    <div class='po_r h_100'>
+    <div>
     </div>
 </template>
 
