@@ -90,9 +90,7 @@ export default {
             this.get_street_boundary_layer();
         },
         get_street_land_layer(){//社区现状用地图层
-            var colors = ["#A900E6", "#FF0000", "#0084A8", "#FFFF00", "#730000", "#9C9C9C","#FFAA00", 
-                "#FF73DF", "#FF7F7F", "#004C73", '#00FFFF', "#00A884", "#4E4E4E", "#005CE6", "#73DFFF",
-                "#4C0073", "#fff"];
+            var colors = ["#A900E6", "#FF0000", "#0084A8", "#FFFF00", "#730000", "#9C9C9C","#FFAA00"];
             this.http.getLocalhostJson("../../../../static/json/present_land.json", res =>{
                 this.mapLayerOption.streetLand.setData(res, {lnglat: 'lnglat'});
                 this.mapLayerOption.streetLand.setOptions({

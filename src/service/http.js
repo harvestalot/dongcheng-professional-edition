@@ -58,11 +58,11 @@ function handleResults (response) {
         }
     }
     if (remoteResponse.resultCode === "10000") {
-        result.data.results = JSON.parse(Decrypt(remoteResponse.data.resultKey))
+        result.data.results = remoteResponse.data
         // result.data.total = remoteResponse.total
         result.success = true
     }
-    if (!remoteResponse.success) {
+    if (remoteResponse.resultCode !== "10000") {
         let code = remoteResponse.errorCode
         if (code === 400) {
             console.log('传参错误')
@@ -167,7 +167,7 @@ export default {
                     // exception(error)
                     errorHandle(response.status, response.data.message)
                 } else {
-                    console.log(response.data.message)
+                    // console.log(response.data.message)
                 }
             }
         )
