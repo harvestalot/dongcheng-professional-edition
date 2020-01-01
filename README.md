@@ -48,3 +48,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 3. 新增公共空间--公园绿地、胡同环卫图层
 4. 新增产业结构--产业聚集度POI点图层
 5. 新增道路交通--交通路况监测、停车场图层
+
+
+### ##2020-01-01
+
+1. 新增职住比分布图层
+2. 新增建筑密度、容积率、超高小区、老旧小区分布图层
