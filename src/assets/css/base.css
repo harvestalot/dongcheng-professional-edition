@@ -90,3 +90,34 @@ a {
     width: 100%;
     height: 50%;
 }
+/* 分段色差阶梯 */
+.chromatic_gradient span{
+    display: inline-block;
+    width: 30px;
+    height: 12px;
+}
+.chromatic_gradient:nth-child(1) span{
+    background-color: #83AF9B;
+}
+.chromatic_gradient:nth-child(2) span{
+    background-color: #8A977B;
+}
+.chromatic_gradient:nth-child(3) span{
+    background-color: #F9CDAD;
+}
+.chromatic_gradient:nth-child(4) span{
+    background-color: #FC9D9A;
+}
+.chromatic_gradient:nth-child(5) span{
+    background-color: #E58308;
+}
+.chromatic_gradient:nth-child(6) span{
+    background-color: #DC5712;
+}
+.chromatic_gradient:nth-child(7) span{
+    background-color: #FE4365;
+}
+.main_content .chromatic_gradient_map_legend{
+    width: 150px;
+    left: -155px;
+}

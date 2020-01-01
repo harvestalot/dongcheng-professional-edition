@@ -10,11 +10,35 @@
                 <a-select-option value="5">职住比</a-select-option>
             </a-select>
         </div>
-        
         <div class="echarts_content">
             <div class="echarts_content_sub">
 
             </div>
+        </div>
+        <div class="map_legend chromatic_gradient_map_legend" v-if="layer_type_code==5">
+             <a-row>
+                <a-col :span="24" class="chromatic_gradient">
+                    <span></span>&nbsp;&nbsp;0.23&nbsp;-&nbsp;0.35
+                </a-col>
+                <a-col :span="24" class="mt_10 chromatic_gradient">
+                    <span></span>&nbsp;&nbsp;0.36&nbsp;-&nbsp;0.45
+                </a-col>
+                <a-col :span="24" class="mt_10 chromatic_gradient">
+                    <span></span>&nbsp;&nbsp;0.46&nbsp;-&nbsp;0.55
+                </a-col>
+                <a-col :span="24" class="mt_10 chromatic_gradient">
+                    <span></span>&nbsp;&nbsp;0.56&nbsp;-&nbsp;0.80
+                </a-col>
+                <a-col :span="24" class="mt_10 chromatic_gradient">
+                    <span></span>&nbsp;&nbsp;0.81&nbsp;-&nbsp;1.00
+                </a-col>
+                <a-col :span="24" class="mt_10 chromatic_gradient">
+                    <span></span>&nbsp;&nbsp;1.01&nbsp;-&nbsp;1.40
+                </a-col>
+                <a-col :span="24" class="mt_10 chromatic_gradient">
+                    <span></span>&nbsp;&nbsp;1.41&nbsp;-&nbsp;2.60
+                </a-col>
+            </a-row>
         </div>
     </div>
 </template>
@@ -28,6 +52,8 @@ export default {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
             heatLayer: this.$parent.viewLayerOption.heat,
+            polygonLayer: this.$parent.viewLayerOption.polygon,
+            layer_type_code:"",
         };
     },
     computed: {},
@@ -39,6 +65,9 @@ export default {
     },
     methods:{
         onChangeLayer(value){//改变图层
+            this.layer_type_code = value;
+            this.heatLayer.hide();
+            this.polygonLayer.hide();
             switch (value){
                 case "1" :
                     this.get_resident_population_layer();
@@ -57,6 +86,7 @@ export default {
                     break;
                 default:
                     this.heatLayer.hide();
+                    this.polygonLayer.hide();
             }
         },
         get_resident_population_layer(){//居住人口热力图层
@@ -157,26 +187,51 @@ export default {
                 this.heatLayer.show();
             })
         },
-        get_office_residence_ratio_layer(){//职住比热力图层
+        get_office_residence_ratio_layer(){//职住比分布图层
+            var _this = this;
             this.http.getLocalhostJson("../../../../static/json/scale/office_residence_ratio.json", res =>{
-                this.heatLayer.setData(res, {
-                    lnglat: "lnglat",
-                });
-                this.heatLayer.setOptions({
+                this.polygonLayer.setData(res, {lnglat: 'lnglat'});
+                this.polygonLayer.setOptions({
                     style: {
-                        radius: 16,
-                        color: {
-                            0.5: '#2c7bb6',
-                            0.65: '#abd9e9',
-                            0.7: '#ffffbf',
-                            0.9: '#fde468',
-                            1.0: '#d7191c'
+                        // opacity: 0.5,
+                        color: function (item) {
+                            var value = item.value.value;
+                            var colors = _this.$Basice.chromatic_gradient;
+                            var color = "";
+                            switch (true){
+                                case (value > 0.23 && value < 0.35) :
+                                    color = colors[1];
+                                    break;
+                                case (value > 0.36 && value < 0.45) :
+                                    color = colors[2];
+                                    break;
+                                case (value > 0.46 && value < 0.55) :
+                                    color = colors[3];
+                                    break;
+                                case (value > 0.56 && value < 0.80) :
+                                    color = colors[4];
+                                    break;
+                                case (value > 0.81 && value < 1.0) :
+                                    color = colors[5];
+                                    break;
+                                case (value > 1.01 && value < 1.40) :
+                                    color = colors[6];
+                                    break;
+                                case (value > 1.41 && value < 2.60) :
+                                    color = colors[7];
+                                    break;
+                                default:
+                                    color = colors[0];
+                            }
+                            return color;
                         },
-                        // opacity:[0.3,0.7]
+                        // height: function () {
+                        //     return Math.random() * 500 + 100;
+                        // }
                     }
                 });
-                this.heatLayer.render();
-                this.heatLayer.show();
+                this.polygonLayer.render();
+                this.polygonLayer.show();
             })
         },
 
