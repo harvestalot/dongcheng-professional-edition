@@ -11,7 +11,7 @@
             </a-checkbox-group>
         </div>
         <div class="mt_10">
-            <a-button type="primary" size="small">交通可达性</a-button>
+            <a-button type="primary" size="small"><router-link :to="{ name: 'AccessibilityMap' }">交通可达性</router-link></a-button>
         </div>
     </div>
 </template>

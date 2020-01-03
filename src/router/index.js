@@ -116,10 +116,15 @@ const router = new Router({
             ] 
         },
         {
+            path: '/accessibility_map',
+            name: 'AccessibilityMap',
+            component: () => import('@/views/accessibility_map.vue'), 
+        },
+        {
             path: '/about_us',
             name: 'AboutUs',
-            component: () => import('components/about_us.vue'), 
-        }
+            component: () => import('@/views/about_us.vue'), 
+        },
     ]
 })
 

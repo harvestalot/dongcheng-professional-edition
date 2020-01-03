@@ -9,6 +9,10 @@ ins,
 a {
     text-decoration: none;
 }
+.content_layout{
+    width: 1200px;
+    margin: 0 auto;
+}
 .w_100{
     width: 100%;
 }
