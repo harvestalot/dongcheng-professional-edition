@@ -28,6 +28,7 @@ export default {
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
+            polygonLayer: this.$parent.viewLayerOption.polygon,
         };
     },
     computed: {},

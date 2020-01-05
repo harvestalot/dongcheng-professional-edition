@@ -16,6 +16,7 @@ export default {
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
+            heatLayer: this.$parent.viewLayerOption.heat,
         };
     },
     computed: {},

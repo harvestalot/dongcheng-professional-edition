@@ -42,8 +42,8 @@ export default {
                     trigger: "item"
                 },
                 radar: {
-                    center: ["50%", "60%"],
-                    radius: "65%",
+                    center: ["50%", "63%"],
+                    radius: "60%",
                     startAngle: 90,
                     splitNumber: 4,
                     shape: "circle",

@@ -1,5 +1,6 @@
 export default {
     data_server_url : "http://114.64.228.103:8902/",
+    reachability_url: "http://114.64.228.103/reachcircle/walkServlet",//可达性覆盖范围服务地址
     // file_server_url : "http://peking.caupdcloud.com/dongcheng/assets/mapdata/json/",
     // icon_url: "http://peking.caupdcloud.com/dongcheng/assets/mapdata/images/",
     // server_img_url: "http://114.64.228.103:8089/",
@@ -12,7 +13,7 @@ export default {
     grid: {//图表整体
         containLabel:false,
         left: 30,
-        top: 90,
+        top: 100,
         bottom:50,
     },
     echart_title: {//统计图title

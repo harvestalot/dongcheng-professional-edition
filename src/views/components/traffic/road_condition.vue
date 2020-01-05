@@ -26,6 +26,7 @@ export default {
         get_real_time_traffic_layer(){
             this.trafficLayer.setMap(this.mainMapLayer);
             this.trafficLayer.show();
+            this.$message.info('每小时更新一次路况信息。', 20);
         }
     },
     mounted() {},
