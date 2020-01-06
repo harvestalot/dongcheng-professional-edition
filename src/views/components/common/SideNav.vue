@@ -71,9 +71,6 @@ export default {
     computed: {},
     watch: { 
         '$route.path':function(newVal,oldVal){
-            if(newVal){
-                console.log(newVal)
-            }
         }
     },
     created() {

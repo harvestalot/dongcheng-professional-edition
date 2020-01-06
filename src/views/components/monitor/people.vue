@@ -18,7 +18,7 @@ export default {
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
-            heatLayer: this.$parent.viewLayerOption.heat,
+            timelineHeatLayer: this.$parent.viewLayerOption.timelineHeat,
             time_line_data: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00",
                 "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
                 "16:00", "17:00", "18:00", "19:00", "20:00", "11:00", "22:00", "23:00"],
@@ -26,7 +26,8 @@ export default {
         };
     },
     computed: {},
-    watch: {},
+    watch: {
+    },
     mounted() {
         this.get_people_activities_layer();
         this.get_timeline();
@@ -35,7 +36,7 @@ export default {
         get_people_activities_layer(){//人口活动热力图层
             this.http.getLocalhostJson("../../../../static/json/monitor/people_activities.csv", res =>{
                 var _this = this;
-                this.heatLayer.setData(res, {
+                this.timelineHeatLayer.setData(res, {
                     value: function (params) {
                         if (params) {
                             var value = params[_this.currentTime];
@@ -53,7 +54,7 @@ export default {
                     // 指定数据类型
                     type: 'csv'
                 });
-                this.heatLayer.setOptions({
+                this.timelineHeatLayer.setOptions({
                     style: {
                         radius: 18,
                         color: {
@@ -68,8 +69,8 @@ export default {
                         // opacity:[0.3,0.7]
                     }
                 });
-                this.heatLayer.render();
-                this.heatLayer.show();
+                this.timelineHeatLayer.render();
+                this.timelineHeatLayer.show();
             })
         },
         get_timeline(){//时间轴
@@ -83,7 +84,7 @@ export default {
                     // loop: false,
                     autoPlay: true,
                     // currentIndex: 0,
-                    playInterval: 3000,
+                    playInterval: 5000,
                     controlStyle: {
                         position:"right",
                         showNextBtn: false,

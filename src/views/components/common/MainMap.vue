@@ -25,6 +25,7 @@ export default {
             },
             viewLayerOption:{//页面图层
                 heat:"",
+                timelineHeat:"",
                 Icon:"",
                 polygon:"",
                 pointCloud:"",
@@ -69,6 +70,10 @@ export default {
                 // zIndex: 15,
             });
             this.viewLayerOption.heat = new Loca.HeatmapLayer({//热力图层
+                map: this.mapLayerOption.base,
+                // zIndex: 15,
+            });
+            this.viewLayerOption.timelineHeat = new Loca.HeatmapLayer({//时间轴热力图层
                 map: this.mapLayerOption.base,
                 // zIndex: 15,
             });

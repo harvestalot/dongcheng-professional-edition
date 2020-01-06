@@ -77,6 +77,7 @@ export default {
         resetMap(){
             this.$refs.mainMapChild.mapLayerOption.base.clearMap();//重置地图
             this.$refs.mainMapChild.viewLayerOption.heat.hide();
+            this.$refs.mainMapChild.viewLayerOption.timelineHeat.hide();
             this.$refs.mainMapChild.viewLayerOption.polygon.hide();
             this.$refs.mainMapChild.viewLayerOption.traffic.hide();
         },
