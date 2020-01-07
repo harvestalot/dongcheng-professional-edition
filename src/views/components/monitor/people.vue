@@ -22,7 +22,6 @@ export default {
                 "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
                 "16:00", "17:00", "18:00", "19:00", "20:00", "11:00", "22:00", "23:00"],
             currentTime: "00:00",
-            timelineChart:"",
         };
     },
     computed: {},
@@ -31,14 +30,6 @@ export default {
     mounted() {
         this.get_people_activities_layer();
         this.get_timeline();
-        if(this.timelineChart){
-            var _this = this;
-            _this.timelineChart.on("timelinechanged", (params) => {
-                console.log(params)
-                _this.currentTime = _this.time_line_data[params.currentIndex];
-                _this.get_people_activities_layer();
-            })
-        }
     },
     methods: {
         get_people_activities_layer(){//人口活动热力图层
@@ -82,7 +73,7 @@ export default {
             })
         },
         get_timeline(){//时间轴
-            this.timelineChart = echarts.init(document.getElementById("timeline"));
+            var timelineChart = echarts.init(document.getElementById("timeline"));
             var option = {
                 timeline: {
                     left:10,
@@ -116,7 +107,13 @@ export default {
                     }
                 }
             };
-            this.timelineChart.setOption(option, true);
+            timelineChart.setOption(option, true);
+            var _this = this;
+            timelineChart.on("timelinechanged", (params) => {
+                console.log(params)
+                _this.currentTime = _this.time_line_data[params.currentIndex];
+                _this.get_people_activities_layer();
+            })
         }
     },
     created() {},
