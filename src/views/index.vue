@@ -66,12 +66,12 @@ export default {
     watch: { 
         '$route.path':function(newVal,oldVal){
             if(newVal){
-                this.reload();//刷新页面
+                this.resetMap();//刷新页面
             }
         }
     },
     mounted(){
-        this.reload();
+        this.resetMap();
     }, 
     methods: {
         resetMap(){
