@@ -86,7 +86,32 @@ a {
     right: 101%;
     width: 298%;
     height: 70px;
+    padding: 0 10px;
     background-color: rgba(0,0,0,0.7);
+    box-shadow: 0px 0px 8px 0px rgba(188, 142, 94, 1);
+    color: #F0B33C;
+    text-align: center;
+}
+.time_line_style{
+    position: relative;
+    height: 2px;
+    margin-top: 30px;
+    background-color: #F0B33C;
+}
+.time_point{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    margin-top: -6px;
+    margin-left: -6px;
+    border: 1px solid #F0B33C;
+    border-radius: 6px;
+    background-color: #fff;
+}
+.current_time_point{
+    background-color: #F0B33C;
     box-shadow: 0px 0px 8px 0px rgba(188, 142, 94, 1);
 }
 /* 右侧统计图 */

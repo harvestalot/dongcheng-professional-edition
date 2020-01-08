@@ -6,7 +6,16 @@
                 
             </div>
         </div>
-        <div id="timeline" class="timeline"></div>
+        <div id="timeline" class="timeline">
+            <a-row>
+                <a-col :span="1" v-for="(item, index) in time_line_data" :key="index">
+                    <p class="time_line_style">
+                        <span :class="{ time_point: item.time_point, current_time_point: item.current_time_point}"></span>
+                    </p>
+                    {{ item.time }}
+                </a-col>
+            </a-row>
+        </div>
     </div>
 </template>
 
@@ -22,6 +31,32 @@ export default {
                 "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
                 "16:00", "17:00", "18:00", "19:00", "20:00", "11:00", "22:00", "23:00"],
             currentTime: "00:00",
+            // time_line_data:[
+            //     { time: "00:00", time_point : true, current_time_point : false },
+            //     { time: "01:00", time_point : true, current_time_point : false },
+            //     { time: "02:00", time_point : true, current_time_point : false },
+            //     { time: "03:00", time_point : true, current_time_point : false },
+            //     { time: "04:00", time_point : true, current_time_point : false },
+            //     { time: "05:00", time_point : true, current_time_point : false },
+            //     { time: "06:00", time_point : true, current_time_point : false },
+            //     { time: "07:00", time_point : true, current_time_point : false },
+            //     { time: "08:00", time_point : true, current_time_point : false },
+            //     { time: "09:00", time_point : true, current_time_point : false },
+            //     { time: "10:00", time_point : true, current_time_point : false },
+            //     { time: "11:00", time_point : true, current_time_point : false },
+            //     { time: "12:00", time_point : true, current_time_point : false },
+            //     { time: "13:00", time_point : true, current_time_point : false },
+            //     { time: "14:00", time_point : true, current_time_point : false },
+            //     { time: "15:00", time_point : true, current_time_point : false },
+            //     { time: "16:00", time_point : true, current_time_point : false },
+            //     { time: "17:00", time_point : true, current_time_point : false },
+            //     { time: "18:00", time_point : true, current_time_point : false },
+            //     { time: "19:00", time_point : true, current_time_point : false },
+            //     { time: "20:00", time_point : true, current_time_point : false },
+            //     { time: "21:00", time_point : true, current_time_point : false },
+            //     { time: "22:00", time_point : true, current_time_point : false },
+            //     { time: "23:00", time_point : true, current_time_point : false },
+            // ],
         };
     },
     computed: {},
@@ -30,6 +65,24 @@ export default {
     mounted() {
         this.get_people_activities_layer();
         this.get_timeline();
+        // const currentTimeData = this.time_line_data.filter((item) => {
+        //     return item.time === this.currentTime;
+        // });
+        // currentTimeData[0].current_time_point = true;
+        // var index = 0;
+        // clearInterval(timer)
+        // var timer = setInterval(() =>{
+        //     console.log(index)
+        //     index ++;
+        //     this.currentTime =  this.time_line_data[index].time;
+        //     this.time_line_data.forEach((item) => {
+        //         item.current_time_point = false;
+        //     });
+        //     const currentTimeData = this.time_line_data.filter((item) => {
+        //         return item.time === this.currentTime;
+        //     });
+        //     currentTimeData[0].current_time_point = true;
+        // }, 5000);
     },
     methods: {
         get_people_activities_layer(){//人口活动热力图层
@@ -109,6 +162,8 @@ export default {
             };
             timelineChart.setOption(option, true);
             var _this = this;
+            console.log(window)
+            timelineChart.off("timelinechanged");
             timelineChart.on("timelinechanged", (params) => {
                 console.log(params)
                 _this.currentTime = _this.time_line_data[params.currentIndex];
