@@ -71,10 +71,11 @@ export default {
         }
     },
     mounted(){
-        this.resetMap();
+        this.reload();
     }, 
     methods: {
         resetMap(){
+            window.clearInterval(this.$Basice.timer);
             this.$refs.mainMapChild.mapLayerOption.base.clearMap();//重置地图
             this.$refs.mainMapChild.viewLayerOption.heat.hide();
             this.$refs.mainMapChild.viewLayerOption.timelineHeat.hide();
