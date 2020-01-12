@@ -12,7 +12,12 @@
         </div>
         <div class="echarts_content">
             <div class="echarts_content_sub">
-
+                <div class="chart_content_box">
+                    <div id="pictorial_bar_chart_content" class="h_100"></div>
+                </div>
+                <div class="chart_content_box">
+                    <div id="line_stack_chart_content" class="h_100"></div>
+                </div>
             </div>
         </div>
         <div class="map_legend chromatic_gradient_map_legend" v-if="layer_type_code==5">
@@ -54,6 +59,13 @@ export default {
             heatLayer: this.$parent.viewLayerOption.heat,
             polygonLayer: this.$parent.viewLayerOption.polygon,
             layer_type_code:"",
+            street_names: [],
+            legend_data:["居住人口就业地", "就业人口居住地"],
+            office_residence_ratio_data: [],//职住比
+            line_chart_data: {
+                "居住人口就业地": [],
+                "就业人口居住地": [],
+            }
         };
     },
     computed: {},
@@ -62,6 +74,7 @@ export default {
     methods: {},
     created() {},
     mounted() {
+        this.get_statistics_chart_data();
     },
     methods:{
         onChangeLayer(value){//改变图层
@@ -234,7 +247,181 @@ export default {
                 this.polygonLayer.show();
             })
         },
+        get_statistics_chart_data(){//获取统计图表数据
+            this.http.get("parking/geParkingList", {}, res =>{
+                if(res.success){
+                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    for(var i = 0; i < data.length; i++){
+                        var item = data[i];
+                        this.street_names.push(item.streetName.split("街道")[0]);
+                        this.office_residence_ratio_data.push(item.commercialParking);
+                        this.line_chart_data["居住人口就业地"].push(item.jobParking);
+                        this.line_chart_data["就业人口居住地"].push(item.communityParking);
+                    }
+                    this.get_pictorial_bar_chart();
+                    this.get_line_stack_chart();
+                }
+            })
+        },
+        get_pictorial_bar_chart(){//职住比统计图
+            var pictorial_bar_chart = echarts.init(document.getElementById("pictorial_bar_chart_content"));
+            var pictorial_bar_option = {
+                title:{ ...{
+                    text: "各街道职住比统计",
+                }, ...this.$Basice.echart_title},
+                grid: {
+                    containLabel:false,
+                    left: 30,
+                    top: 50, 
+                    bottom:80,
+                },
+                xAxis: {
+                    type: "category",
+                    data: this.street_names,
+                    axisLabel: { ...this.$Basice.coordinate_axis_style.axisLabel, ...{
+                        formatter:function(val){
+                            return val.split("").join("\n");
+                        }
+                    }},
+                    axisLine: this.$Basice.coordinate_axis_style.axisLine,
+                    splitLine: {
+                        show: false
+                    }
+                },
+                yAxis: {
+                    type: "value",
+                    axisLabel:  this.$Basice.coordinate_axis_style.axisLabel,
+                    axisLine: this.$Basice.coordinate_axis_style.axisLine,
+                    splitLine: {
+                        show: false
+                    }
+                },
+                series: [
+                    {
+                        type: "pictorialBar",
+                        label: {
+                            show: true,
+                            position: 'top',
+                            textStyle: {
+                                fontSize: 16,
+                                color: this.$Basice.colors[0],
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: {
+                                    type: "linear",
+                                    x: 0,
+                                    y: 0,
+                                    x2: 0,
+                                    y2: 1,
+                                    colorStops: [{
+                                            offset: 0,
+                                            color: this.$Basice.colors[0]
+                                        },
+                                        {
+                                            offset: 1,
+                                            color: this.$Basice.colors[0]
+                                        }
+                                    ],
+                                    global: false
+                                }
+                            }
+                        },
+                        data: this.office_residence_ratio_data,
+                        stack: "a",
+                        symbol: "path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z"
+                    }
+                ]
+            }
+            pictorial_bar_chart.setOption(pictorial_bar_option, true);
+            window.onresize = function(){
+                pictorial_bar_chart.resize();
+            }
+        },
+        get_line_stack_chart(){//居住人口就业地和就业人口居住地统计图
+            var line_chart = echarts.init(document.getElementById("line_stack_chart_content"));
+            var line_chart_option = {
+                title:{ ...{
+                    text: "居住人口就业地和就业人口居住地统计",
+                }, ...this.$Basice.echart_title},
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        lineStyle: {
+                            color: '#57617B'
+                        }
+                    }
+                },
+                legend: { 
+                    ...{ data: this.legend_data},
+                    ...this.$Basice.legend
+                },
+                grid: this.$Basice.grid,
+                xAxis: {
+                    type : 'category',
+                    data: this.street_names,
+                    axisLabel: { ...this.$Basice.coordinate_axis_style.axisLabel, 
+                        ...{formatter:function(val){
+                                return val.split("").join("\n");
+                            }
+                        }
+                    },
+                    axisLine: this.$Basice.coordinate_axis_style.axisLine,
+                    splitLine: this.$Basice.coordinate_axis_style.splitLine,
+                },
+                yAxis: { ...{
+                    type : 'value',
+                    name: '数量',
+                }, ...this.$Basice.coordinate_axis_style},
+                series: []
+            };
 
+            for(var i = 0; i < this.legend_data.length; i++){
+                var item = this.legend_data[i];
+                line_chart_option.series.push({
+                    name: item,
+                    type: 'line',
+                    smooth: true,
+                    symbol: 'circle',
+                    symbolSize: 5,
+                    showSymbol: false,
+                    lineStyle: {
+                        normal: {
+                            width: 1
+                        }
+                    },
+                    areaStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                offset: 0,
+                                color: this.$Basice.colors[i],
+                                opacity:0.3,
+                            }, {
+                                offset: 0.8,
+                                // color: 'rgba(137, 189, 27, 0)'
+                                color: this.$Basice.colors[i],
+                                opacity:0,
+                            }], false),
+                            shadowColor: 'rgba(0, 0, 0, 0.1)',
+                            shadowBlur: 3
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: this.$Basice.colors[i],
+                            borderColor: this.$Basice.colors[i],
+                            borderWidth: 3
+                        }
+                    },
+                    data: this.line_chart_data[item]
+                })
+            }
+            line_chart.setOption(line_chart_option, true);
+            window.onresize = function(){
+                line_chart.resize();
+            }
+        }
     }
 }
 </script>

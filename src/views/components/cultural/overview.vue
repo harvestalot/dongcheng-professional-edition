@@ -3,7 +3,7 @@
     <div class="main_content">
         <div class="echarts_content">
             <div class="echarts_content_sub">
-                
+                <div id="cultural_resources_overview_bar_content" class="h_100"></div>
             </div>
         </div>
         <div class="map_legend">
@@ -49,11 +49,18 @@ export default {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
             markers:[],
+            street_names: [],
+            legend_data:["物质文化遗产", "历史建筑"],
+            bar_chart_data: {
+                "物质文化遗产": [],
+                "历史建筑": [],
+            }
         };
     },
     computed: {},
     watch: {},
     mounted() {
+        this.get_statistics_chart_data();
         this.get_cultural_heritage_layer();
         this.get_historical_building_layer();
     },
@@ -104,6 +111,77 @@ export default {
                         this.markers.push(marker);
                 }
             })
+        },
+        get_statistics_chart_data(){//获取统计图表数据
+            this.http.get("parking/geParkingList", {}, res =>{
+                if(res.success){
+                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    for(var i = 0; i < data.length; i++){
+                        var item = data[i];
+                        this.street_names.push(item.streetName.split("街道")[0]);
+                        this.bar_chart_data["物质文化遗产"].push(item.jobParking);
+                        this.bar_chart_data["历史建筑"].push(item.communityParking);
+                    }
+                    this.load_bar_chart();
+                }
+            })
+        },
+        load_bar_chart(){
+            var cultural_resources_overview_bar_chart = echarts.init(document.getElementById("cultural_resources_overview_bar_content"));
+            var bar_option = {
+                color: this.$Basice.colors,
+                title:{ ...{
+                    text: "各街道物质文化遗产和历史建筑统计",
+                }, ...this.$Basice.echart_title},
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    top:40,
+                    right:100,
+                    icon:"circle",
+                    textStyle:{
+                        color:"#222",
+                    },
+                    data: this.legend_data
+                },
+                grid: {
+                    left: 80,
+                    top:80,
+                    right:50,
+                    bottom:30,
+                },
+                xAxis: {
+                    type: 'value',
+                    axisLabel:  this.$Basice.coordinate_axis_style.axisLabel,
+                    axisLine:  this.$Basice.coordinate_axis_style.axisLine,
+                    splitLine:  this.$Basice.coordinate_axis_style.splitLine,
+                    name: "数量",
+                },
+                yAxis: {
+                    type: 'category',
+                    axisLabel:  this.$Basice.coordinate_axis_style.axisLabel,
+                    axisLine:  this.$Basice.coordinate_axis_style.axisLine,
+                    splitLine:  this.$Basice.coordinate_axis_style.splitLine,
+                    inverse: true,
+                    data: this.street_names,
+                },
+                series: []
+            };
+            for(var i = 0; i < this.legend_data.length; i++){
+                bar_option.series.push({
+                    name: this.legend_data[i],
+                    type: 'bar',
+                    data: this.bar_chart_data[this.legend_data[i]],
+                })
+            }
+            cultural_resources_overview_bar_chart.setOption(bar_option, true);
+            window.onresize = function(){
+                cultural_resources_overview_bar_chart.resize();
+            }
         }
     },
     created() {},

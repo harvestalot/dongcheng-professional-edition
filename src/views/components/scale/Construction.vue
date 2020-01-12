@@ -11,7 +11,7 @@
         </div>
         <div class="echarts_content">
             <div class="echarts_content_sub">
-
+                <div id="bar_line_stack_chart_content" class="h_100"></div>
             </div>
         </div>
         <div class="map_legend chromatic_gradient_map_legend" v-if="layer_type_code && layer_type_code<4">
@@ -86,7 +86,11 @@ export default {
                     "23.2 - 26.0", "26.1 - 29.3", "29.4 - 32.0", "32.1 - 39.4"],
                 "3": ["1 - 3", "4 - 6", "7 - 10", "11 - 15", "15以上"],
                 "4": ["1900年 - 1970年", "1971年 - 1975年", "1976年 - 1980年", "1981年 - 1989年", "不明年份"]
-            }
+            },
+            street_names:[],
+            legend_data:["建筑密度", "容积率"],
+            buildings_density_data:[],
+            buildings_volume_ratio_data:[],
         };
     },
     computed: {},
@@ -95,6 +99,7 @@ export default {
     created() {
     },
     mounted() {
+        this.get_statistics_chart_data();
     },
     methods:{
         onChangeLayer(value){//改变图层
@@ -267,6 +272,126 @@ export default {
                         this.markers.push(marker);
                 }
             })
+        },
+        get_statistics_chart_data(){//获取统计图表数据
+            this.http.get("parking/geParkingList", {}, res =>{
+                if(res.success){
+                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    for(var i = 0; i < data.length; i++){
+                        var item = data[i];
+                        this.street_names.push(item.streetName.split("街道")[0]);
+                        this.buildings_density_data.push(item.jobParking);
+                        this.buildings_volume_ratio_data.push(item.communityParking/100);
+                    }
+                    this.get_line_bar_stack_chart();
+                }
+            })
+        },
+        get_line_bar_stack_chart(){//建筑密度、容积率统计图
+            var line_bar_stack_chart = echarts.init(document.getElementById("bar_line_stack_chart_content"));
+            var line_bar_option = {
+                title:{ ...{
+                    text: "各街道建筑密度和容积率统计",
+                }, ...this.$Basice.echart_title},
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',
+                        label: {
+                            show: true,
+                            backgroundColor: '#7B7DDC'
+                        }
+                    }
+                },
+                legend: {
+                    top:40,
+                    data: this.legend_data,
+                    icon:"circle",
+                    textStyle: {
+                        color: '#222'
+                    },
+                },
+                grid: {
+                    left: 80,
+                    top:110,
+                    right:50,
+                    bottom:30,
+                },
+                yAxis: {
+                    data: this.street_names,
+                    axisLine: {
+                        lineStyle: {
+                            color: '#B4B4B4'
+                        }
+                    },
+                    axisTick:{
+                        show:false,
+                    },
+                },
+                xAxis: [{
+
+                    splitLine: {show: false},
+                    axisLine: {
+                        lineStyle: {
+                            color: '#B4B4B4',
+                        }
+                    },
+                    
+                    axisLabel:{
+                        formatter:'{value} ',
+                    }
+                },
+                    {
+
+                    splitLine: {show: false},
+                    axisLine: {
+                        lineStyle: {
+                            color: '#B4B4B4',
+                        }
+                    },
+                    axisLabel:{
+                        formatter:'{value} ',
+                    }
+                }],
+                series: [{
+                    name: '容积率',
+                    type: 'line',
+                    smooth: true,
+                    showAllSymbol: true,
+                    symbol: 'emptyCircle',
+                    symbolSize: 8,
+                    xAxisIndex: 1,
+                    itemStyle: {
+                            normal: {
+                            color: this.$Basice.colors[0]},
+                    },
+                    data: this.buildings_volume_ratio_data
+                }, 
+                
+                {
+                    name: '建筑密度',
+                    type: 'bar',
+                    barWidth: 10,
+                    itemStyle: {
+                        normal: {
+                            barBorderRadius: 5,
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#956FD4'},
+                                    {offset: 1, color: '#3EACE5'}
+                                ]
+                            )
+                        }
+                    },
+                    data: this.buildings_density_data
+                }]
+            };
+            line_bar_stack_chart.setOption(line_bar_option, true);
+            window.onresize = function(){
+                line_bar_stack_chart.resize();
+            }
+
         },
     }
 }

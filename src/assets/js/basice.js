@@ -15,7 +15,7 @@ export default {
         containLabel:false,
         left: 30,
         top: 100,
-        bottom:50,
+        bottom:70,
     },
     echart_title: {//统计图title
         left:10,

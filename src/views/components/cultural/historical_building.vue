@@ -3,7 +3,12 @@
     <div class="main_content">
         <div class="echarts_content">
             <div class="echarts_content_sub">
-                
+                <div class="chart_content_box">
+                    <radar-chart v-if="chartOption.isSuccess" :radarChartOption="chartOption"></radar-chart>
+                </div>
+                <div class="chart_content_box">
+                    <bar-stack-chart v-if="chartOption.isSuccess" :barStackChartOption="chartOption"></bar-stack-chart>
+                </div>
             </div>
         </div>
         <div class="map_legend">
@@ -39,24 +44,56 @@
 
 <script>
 
+import RadarChart from "../common/RadarChart";
+import BarStackChart from "../common/BarStackChart";
 export default {
-    components: {},
+    components: {
+        RadarChart,
+        BarStackChart,
+    },
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
             markers:[],
+            chartOption:{
+                isSuccess:false,
+                title_1:"各街道历史建筑数量占比图",
+                title_2:"各街道历史建筑数量统计",
+                street_name_data: [],
+                radar_chart_indicator_data: [],
+                lenged_data: ["寺庙宫观", "故居", "使馆", "王府", "官署", "古树名木"],
+                legend_selected:{
+                    '寺庙宫观': true,
+                    '故居': false,
+                    '使馆': false,
+                    '王府': false,
+                    '官署': false,
+                    '古树名木': false,
+                },
+                pie_comprehensive_data: {
+                    "寺庙宫观":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "故居":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "使馆":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "王府":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "官署":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "古树名木":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                },
+                bar_comprehensive_data: {
+                    "寺庙宫观":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "故居":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "使馆":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "王府":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "官署":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "古树名木":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                },
+            },
         };
     },
     computed: {},
     watch: {},
     mounted() {
         this.get_historical_building_layer();
-        // this.http.get("banner/getBannerList", { type:"VIGOUR" }, res =>{
-        //     if(res.success){
-        //         var data  = res.data.results;
-        //         console.log(data)
-        //     }
-        // })
+        this.get_historical_building_coverage();
     },
     methods: {
         get_historical_building_layer(){//历史建筑
@@ -83,7 +120,35 @@ export default {
                         this.markers.push(marker);
                 }
             })
-        }
+        },
+        get_historical_building_coverage(){//历史建筑覆盖率
+            this.http.get("architecture/getCoverage", {}, res =>{
+                if(res.success){
+                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    this.get_view_data(data);
+                }
+            })
+        },
+        get_view_data(result_data){
+            for(var i = 0; i < result_data.length; i++){
+                for(var key in result_data[i]){
+                    this.chartOption.street_name_data.push(key.replace("街道",""));
+                    this.chartOption.radar_chart_indicator_data.push({
+                        name: key.replace("街道",""),
+                        max:20,
+                        color:'#222',
+                        rotate:90
+                    })
+                    if(result_data[i][key].length > 0){
+                        for(var j = 0; j < result_data[i][key].length; j++){
+                            this.chartOption.pie_comprehensive_data[result_data[i][key][j].TYPE][i] = result_data[i][key][j].TOTAL;
+                            this.chartOption.bar_comprehensive_data[result_data[i][key][j].TYPE][i] = result_data[i][key][j].TOTAL;
+                        }
+                    }
+                }
+                this.chartOption.isSuccess = true;
+            }
+        },
     },
     created() {},
 }
