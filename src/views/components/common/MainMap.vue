@@ -96,7 +96,7 @@ export default {
         },
         get_street_land_layer(){//社区现状用地图层
             var colors = ["#A900E6", "#FF0000", "#0084A8", "#FFFF00", "#730000", "#9C9C9C","#FFAA00"];
-            this.http.getLocalhostJson("../../../../static/json/present_land.json", res =>{
+            this.http.getLocalhostJson("/static/json/present_land.json", res =>{
                 this.mapLayerOption.streetLand.setData(res, {lnglat: 'lnglat'});
                 this.mapLayerOption.streetLand.setOptions({
                     style: {
@@ -138,7 +138,7 @@ export default {
             })
         },
         get_street_boundary_layer(){//社区街道边界图层
-            this.http.getLocalhostJson("../../../../static/json/street_boundary_data.json", res =>{
+            this.http.getLocalhostJson("/static/json/street_boundary_data.json", res =>{
                 this.mapLayerOption.streetBoundary.setData(res, {lnglat: 'lnglat'});
                 this.mapLayerOption.streetBoundary.setOptions({
                     style: {
@@ -154,7 +154,7 @@ export default {
             })
         },
         get_street_road_layer(){//社区路网图层
-            this.http.getLocalhostJson("../../../../static/json/road.json", res =>{
+            this.http.getLocalhostJson("/static/json/road.json", res =>{
                 this.mapLayerOption.streetRoad.setData(res, {lnglat: 'lnglat'});
                 this.mapLayerOption.streetRoad.setOptions({
                     style: {

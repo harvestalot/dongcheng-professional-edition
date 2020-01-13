@@ -87,7 +87,7 @@ export default {
     },
     methods: {
         get_people_activities_layer(){//人口活动热力图层
-            this.http.getLocalhostJson("../../../../static/json/monitor/people_activities.csv", res =>{
+            this.http.getLocalhostJson("/static/json/monitor/people_activities.csv", res =>{
                 var _this = this;
                 this.timelineHeatLayer.setData(res, {
                     value: function (params) {

@@ -103,7 +103,7 @@ export default {
             }
         },
         get_resident_population_layer(){//居住人口热力图层
-            this.http.getLocalhostJson("../../../../static/json/scale/resident_population.json", res =>{
+            this.http.getLocalhostJson("/static/json/scale/resident_population.json", res =>{
                 this.heatLayer.setData(res, {
                     lnglat: "lnglat",
                     // // 或者使用回调函数构造经纬度坐标
@@ -135,7 +135,7 @@ export default {
             })
         },
         get_resident_population_employment_place_layer(){//居住人口就业地热力图层
-            this.http.getLocalhostJson("../../../../static/json/scale/resident_population_employment_place.json", res =>{
+            this.http.getLocalhostJson("/static/json/scale/resident_population_employment_place.json", res =>{
                 this.heatLayer.setData(res, {
                     lnglat: "lnglat",
                 });
@@ -157,7 +157,7 @@ export default {
             })
         },
         get_employed_population_layer(){//就业人口热力图层
-            this.http.getLocalhostJson("../../../../static/json/scale/employed_population.json", res =>{
+            this.http.getLocalhostJson("/static/json/scale/employed_population.json", res =>{
                 this.heatLayer.setData(res, {
                     lnglat: "lnglat",
                 });
@@ -179,7 +179,7 @@ export default {
             })
         },
         get_employment_population_place_layer(){//就业人口居住地热力图层
-            this.http.getLocalhostJson("../../../../static/json/scale/employment_population_place.json", res =>{
+            this.http.getLocalhostJson("/static/json/scale/employment_population_place.json", res =>{
                 this.heatLayer.setData(res, {
                     lnglat: "lnglat",
                 });
@@ -202,7 +202,7 @@ export default {
         },
         get_office_residence_ratio_layer(){//职住比分布图层
             var _this = this;
-            this.http.getLocalhostJson("../../../../static/json/scale/office_residence_ratio.json", res =>{
+            this.http.getLocalhostJson("/static/json/scale/office_residence_ratio.json", res =>{
                 this.polygonLayer.setData(res, {lnglat: 'lnglat'});
                 this.polygonLayer.setOptions({
                     style: {

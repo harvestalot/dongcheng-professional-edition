@@ -6,6 +6,7 @@ import Home from '@/views/components/home'
 Vue.use(Router)
 
 const router = new Router({
+    // base:"professional",
     routes: [
         {
             path: '/',

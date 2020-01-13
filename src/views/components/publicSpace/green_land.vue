@@ -39,7 +39,7 @@ export default {
     methods: {
         get_green_land_layer(){
             var colors = ["#1296db", "#1296db", "#f50bf0"];
-            this.http.getLocalhostJson("../../../../static/json/publicSpace/green_land.json", res =>{
+            this.http.getLocalhostJson("/static/json/publicSpace/green_land.json", res =>{
                 this.polygonLayer.setData(res,{lnglat: 'lnglat'});
                 this.polygonLayer.setOptions({
                     style: {

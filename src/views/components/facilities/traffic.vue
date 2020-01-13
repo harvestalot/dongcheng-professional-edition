@@ -74,14 +74,14 @@ export default {
     },
     methods: {
         get_traffic_layer(){
-            this.http.getLocalhostJson("../../../../static/json/facilities/traffic.json", res =>{
+            this.http.getLocalhostJson("/static/json/facilities/traffic.json", res =>{
                 for(var i = 0; i < res.length; i++){
                     var item = res[i];
                     var marker = new AMap.Marker({
                             map: this.mainMapLayer,
                             icon: new AMap.Icon({
                                 size: new AMap.Size(16, 16),
-                                image: "../../../../static/img/facilities/"+(item.properties.type === '地铁站'?'ditie':'gongjiao')+".png",
+                                image: this.$Basice.icon_url + "/static/img/facilities/"+(item.properties.type === '地铁站'?'ditie':'gongjiao')+".png",
                                 imageOffset: new AMap.Pixel(0, 0),
                                 imageSize: new AMap.Size(-8, -8)
                             }),

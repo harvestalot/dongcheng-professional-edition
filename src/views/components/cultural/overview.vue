@@ -66,14 +66,14 @@ export default {
     },
     methods: {
         get_cultural_heritage_layer(){//文化遗产
-            this.http.getLocalhostJson("../../../../static/json/cultural/tangible_cultural_heritage.json", res =>{
+            this.http.getLocalhostJson("/static/json/cultural/tangible_cultural_heritage.json", res =>{
                 for(var i = 0; i < res.length; i++){
                     var item = res[i];
                     var marker = new AMap.Marker({
                             map: this.mainMapLayer,
                             icon: new AMap.Icon({
                                 size: new AMap.Size(16, 16),
-                                image: "../../../../static/img/cultural/wenhuayichan.png",
+                                image: this.$Basice.icon_url + "/static/img/cultural/wenhuayichan.png",
                                 imageOffset: new AMap.Pixel(0, 0),
                                 imageSize: new AMap.Size(-8, -8)
                             }),
@@ -86,14 +86,14 @@ export default {
             })
         },
         get_historical_building_layer(){//历史建筑
-            this.http.getLocalhostJson("../../../../static/json/cultural/historical_building.json", res =>{
+            this.http.getLocalhostJson("/static/json/cultural/historical_building.json", res =>{
                 for(var i = 0; i < res.length; i++){
                     var item = res[i];
                     var marker = new AMap.Marker({
                             map: this.mainMapLayer,
                             icon: new AMap.Icon({
                                 size: new AMap.Size(16, 16),
-                                image: "../../../../static/img/cultural/"+
+                                image: this.$Basice.icon_url + "/static/img/cultural/"+
                                     (item.type === '故居'?'guju':
                                     (item.type === '寺庙宫观'?'simiao':
                                     (item.type === '王府'?'wangfu':

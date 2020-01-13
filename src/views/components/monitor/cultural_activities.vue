@@ -73,7 +73,7 @@ export default {
             this.get_cultural_activities_layer();
         },
         get_cultural_activities_layer(){//文化活动图层
-            this.http.getLocalhostJson("../../../../static/json/monitor/culture_vitality_data.json", res =>{
+            this.http.getLocalhostJson("/static/json/monitor/culture_vitality_data.json", res =>{
                 var data = [];
                 if(this.layer_type_code !== "全部"){
                     data = res.filter( (item) => {

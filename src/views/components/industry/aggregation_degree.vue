@@ -39,7 +39,7 @@ export default {
             this.get_dongcheng_polygon_layer();
         },
         get_dongcheng_polygon_layer(){//东城范围边界
-            this.http.getLocalhostJson("../../../../static/json/dongcheng_boundary_data.json", res =>{
+            this.http.getLocalhostJson("/static/json/dongcheng_boundary_data.json", res =>{
                 var _this = this;
                 var placeSearch = new AMap.PlaceSearch({});
                 AMap.service(["AMap.PlaceSearch"], function() {

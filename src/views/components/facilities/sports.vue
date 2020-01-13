@@ -69,14 +69,14 @@ export default {
     },
     methods: {
         get_sports_layer(){
-            this.http.getLocalhostJson("../../../../static/json/facilities/sports.json", res =>{
+            this.http.getLocalhostJson("/static/json/facilities/sports.json", res =>{
                 for(var i = 0; i < res.length; i++){
                     var item = res[i];
                     var marker = new AMap.Marker({
                             map: this.mainMapLayer,
                             icon: new AMap.Icon({
                                 size: new AMap.Size(16, 16),
-                                image: "../../../../static/img/facilities/"+
+                                image: this.$Basice.icon_url + "/static/img/facilities/"+
                                     (item.properties.type === '室内体育设施'?'shineihuodong':'wenhuafuwuzhongxin')+".png",
                                 imageOffset: new AMap.Pixel(0, 0),
                                 imageSize: new AMap.Size(-8, -8)
