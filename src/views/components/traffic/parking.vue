@@ -59,14 +59,14 @@ export default {
     },
     methods: {
         get_parking_layer(){
-            this.http.getLocalhostJson("../../../../static/json/parking.json", res =>{
+            this.http.getLocalhostJson("/static/json/parking.json", res =>{
                 for(var i = 0; i < res.length; i++){
                     var item = res[i];
                     var marker = new AMap.Marker({
                         map: this.mainMapLayer,
                         icon: new AMap.Icon({
                             size: new AMap.Size(16, 16),
-                            image: "../../../../static/img/parking/"+
+                            image: this.$Basice.icon_url + "/static/img/parking/"+
                                 (item.type === '小区停车场'?'1':
                                 (item.type === '商业停车场'?'2':
                                 (item.type === '路边停车场'?'3':

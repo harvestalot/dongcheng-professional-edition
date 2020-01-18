@@ -125,7 +125,7 @@ export default {
         },
         get_buildings_volume_ratio_layer(){//建筑容积率图层
             var _this = this;
-            this.http.getLocalhostJson("../../../../static/json/scale/buildings_volume_ratio_and_density.json", res =>{
+            this.http.getLocalhostJson("/static/json/scale/buildings_volume_ratio_and_density.json", res =>{
                 this.polygonLayer.setData(res,{lnglat: 'lnglat'});
                 this.polygonLayer.setOptions({
                     style: {
@@ -169,7 +169,7 @@ export default {
         },
         get_buildings_density_layer(){//建筑密度图层
             var _this = this;
-            this.http.getLocalhostJson("../../../../static/json/scale/buildings_volume_ratio_and_density.json", res =>{
+            this.http.getLocalhostJson("/static/json/scale/buildings_volume_ratio_and_density.json", res =>{
                 this.polygonLayer.setData(res,{lnglat: 'lnglat'});
                 this.polygonLayer.setOptions({
                     style: {
@@ -213,7 +213,7 @@ export default {
         },
         get_buildings_super_high_layer(){//超高建筑分布图层
             var _this = this;
-            this.http.getLocalhostJson("../../../../static/json/scale/buildings.json", res =>{
+            this.http.getLocalhostJson("/static/json/scale/buildings.json", res =>{
                 this.polygonLayer.setData(res,{lnglat: 'lnglat'});
                 this.polygonLayer.setOptions({
                     style: {
@@ -250,14 +250,14 @@ export default {
             })
         },
         get_buildings_second_hand_house_layer(){//老旧小区图层
-            this.http.getLocalhostJson("../../../../static/json/scale/buildings_second_hand_house.json", res =>{
+            this.http.getLocalhostJson("/static/json/scale/buildings_second_hand_house.json", res =>{
                 for(var i = 0; i < res.length; i++){
                     var item = res[i];
                     var marker = new AMap.Marker({
                             map: this.mainMapLayer,
                             icon: new AMap.Icon({
                                 size: new AMap.Size(16, 16),
-                                image: "../../../../static/img/buildings/"+
+                                image: this.$Basice.icon_url + "/static/img/buildings/"+
                                     (item.year >= 1900 && item.year <= 1970?"xiaoqu":
                                     (item.year >= 1971 && item.year <= 1975?"xiaoqu_1":
                                     (item.year >= 1976 && item.year <= 1980?"xiaoqu_2":

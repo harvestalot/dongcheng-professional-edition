@@ -50,12 +50,13 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '../professional/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: path.resolve(__dirname, '../professional'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: './',
+    // assetsPublicPath: './',
+    assetsPublicPath: 'http://www.igeoai.com:8089/professional/',
 
     /**
      * Source Maps

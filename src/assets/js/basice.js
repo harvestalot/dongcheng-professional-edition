@@ -1,9 +1,7 @@
 export default {
     data_server_url : "http://114.64.228.103:8902/",
     reachability_url: "http://114.64.228.103/reachcircle/walkServlet",//可达性覆盖范围服务地址
-    // file_server_url : "http://peking.caupdcloud.com/dongcheng/assets/mapdata/json/",
-    // icon_url: "http://peking.caupdcloud.com/dongcheng/assets/mapdata/images/",
-    // server_img_url: "http://114.64.228.103:8089/",
+    icon_url: "http://www.igeoai.com:8089/professional/",
     timer:"",
     colors: ["#85ccc8",'#a7add7',"#d8a79b",'#85b6db',"#b4d89c","#ceb1a8",
         "#89cbe8", "#d6a2c7",'#dfb27e',"#00FFFF",'#E0F319',"#00FF59", "#DE61FA",

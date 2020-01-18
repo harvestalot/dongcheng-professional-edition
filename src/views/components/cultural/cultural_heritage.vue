@@ -55,14 +55,14 @@ export default {
     },
     methods: {
         get_cultural_heritage_layer(){//文化遗产
-            this.http.getLocalhostJson("../../../../static/json/cultural/tangible_cultural_heritage.json", res =>{
+            this.http.getLocalhostJson("/static/json/cultural/tangible_cultural_heritage.json", res =>{
                 for(var i = 0; i < res.length; i++){
                     var item = res[i];
                     var marker = new AMap.Marker({
                             map: this.mainMapLayer,
                             icon: new AMap.Icon({
                                 size: new AMap.Size(16, 16),
-                                image: "../../../../static/img/cultural/"+
+                                image: this.$Basice.icon_url + "/static/img/cultural/"+
                                     (item.protection_class === '全国重点文物保护单位'?'wenhuayichan':
                                     (item.protection_class === '市级文物保护单位'?'wenhuayichan_1':
                                     (item.protection_class === '区级文物保护单位'?'wenhuayichan_2':'wenhuayichan_3')))+".png",

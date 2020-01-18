@@ -27,7 +27,7 @@ export default {
             this.get_street_name_layer();
         },
         get_street_name_layer(){//社区名字文字图层
-            this.http.getLocalhostJson("../../../../static/json/street_name_data.json", res =>{
+            this.http.getLocalhostJson("/static/json/street_name_data.json", res =>{
                 //添加文字标记图层
                 this.streetNameLayer.setData(res, {
                     lnglat: 'lnglat'
