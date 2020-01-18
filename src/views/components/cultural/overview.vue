@@ -52,8 +52,8 @@ export default {
             street_names: [],
             legend_data:["物质文化遗产", "历史建筑"],
             bar_chart_data: {
-                "物质文化遗产": [],
-                "历史建筑": [],
+                "物质文化遗产": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                "历史建筑": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
             }
         };
     },
@@ -113,18 +113,24 @@ export default {
             })
         },
         get_statistics_chart_data(){//获取统计图表数据
-            this.http.get("parking/geParkingList", {}, res =>{
+            this.http.get("culture/getCoverage", {}, res =>{
                 if(res.success){
                     var data  = JSON.parse(Decrypt(res.data.results.resultKey));
-                    for(var i = 0; i < data.length; i++){
-                        var item = data[i];
-                        this.street_names.push(item.streetName.split("街道")[0]);
-                        this.bar_chart_data["物质文化遗产"].push(item.jobParking);
-                        this.bar_chart_data["历史建筑"].push(item.communityParking);
-                    }
-                    this.load_bar_chart();
+                    this.get_view_data(data);
                 }
             })
+        },
+        get_view_data(result_data){//格式化数据
+            for(var i = 0; i < result_data.length; i++){
+                for(var key in result_data[i]){
+                    this.street_names.push(key);
+                    for(var item in result_data[i][key]){
+                        result_data[i][key][item].length > 0?
+                            ( item === "architecture" ? this.bar_chart_data["历史建筑"][i] = result_data[i][key][item][0].TOTAL : this.bar_chart_data["物质文化遗产"][i] = result_data[i][key][item][0].TOTAL):"";
+                    }
+                }
+            }
+            this.load_bar_chart();
         },
         load_bar_chart(){
             var cultural_resources_overview_bar_chart = echarts.init(document.getElementById("cultural_resources_overview_bar_content"));

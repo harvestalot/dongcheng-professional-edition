@@ -42,6 +42,15 @@ a {
 .pointer{
     cursor: pointer;
 }
+.ml_15{
+    margin-left: 15px;
+}
+.mb_10{
+    margin-bottom: 10px;
+}
+.ft_16{
+    font-size: 16px;
+}
 /* 右侧可视化图表盒子 */
 .main_content{
     position: absolute;
@@ -65,7 +74,7 @@ a {
 }
 .main_content .layer_content{
     position: absolute;
-    left: -205px;
+    left: -298%;
     top: 5px;
 }
 .main_content .map_legend{

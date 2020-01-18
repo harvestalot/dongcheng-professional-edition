@@ -47,7 +47,7 @@ export default {
 <style lang='less'>
     .map_tool{
         position: absolute;
-        left: 5px;
+        right: 25.5%;
         top: 5px;
         width: 110px;
         padding: 10px 10px;

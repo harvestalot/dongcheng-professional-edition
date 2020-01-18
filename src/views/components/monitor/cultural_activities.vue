@@ -52,12 +52,15 @@ export default {
                     '其他': false,
                 },
                 pie_comprehensive_data: {
-                    "超市":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                    "菜站":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                },
-                bar_comprehensive_data: {
-                    "超市":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                    "菜站":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "音乐":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "戏剧":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "展览":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "电影":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "公益":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "讲座":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "聚会":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "课程":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "其他":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 },
             },
         };
@@ -65,6 +68,7 @@ export default {
     computed: {},
     watch: {},
     mounted() {
+        this.get_cultural_activities_coverage();
         this.get_cultural_activities_layer();
     },
     methods: {
@@ -100,6 +104,41 @@ export default {
                 this.heatLayer.render();
                 this.heatLayer.show();
             })
+        },
+        get_cultural_activities_coverage(){//文化活动覆盖率
+            this.http.get("vigour/getVigourList", { category: "convenient" }, res =>{
+                if(res.success){
+                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    this.get_view_data(data);
+                }
+            })
+        },
+        get_view_data(result_data){
+            const lenged_english_data = {
+                "music": "音乐",
+                "theatre": "戏剧",
+                "display": "展览",
+                "film": "电影",
+                "publicWelfare" : "公益",
+                "lecture" : "讲座",
+                "party" : "聚会",
+                "curriculun" : "课程",
+                "others" : "其他"
+            };
+            for(var i = 0; i < result_data.length; i++){
+                var item = result_data[i];
+                this.chartOption.street_name_data.push(item.streetName.replace("街道",""));
+                this.chartOption.radar_chart_indicator_data.push({
+                    name: item.streetName.replace("街道",""),
+                    max:100,
+                    color:'#222',
+                    rotate:90
+                })
+                for(var key in lenged_english_data){
+                    this.chartOption.pie_comprehensive_data[lenged_english_data[item[key]]][i] = item[key];
+                }
+                this.chartOption.isSuccess = true;
+            }
         },
     },
     created() {},
