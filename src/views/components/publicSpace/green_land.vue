@@ -99,7 +99,7 @@ export default {
         get_green_land_coverage(){//各街道绿地数据
             this.http.get("Coverage/getCoverageByCategory", { category: "convenient" }, res =>{
                 if(res.success){
-                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    var data  = JSON.parse(Decrypt(res.data.results.coverageKey));
                     this.load_green_land_bar_chart();
                     this.load_green_land_bar_line_chart();
                 }

@@ -68,7 +68,7 @@ export default {
         get_Hutong_sanitation_data(){//各街道再生资源回收站数据
             this.http.get("Coverage/getCoverageByCategory", { category: "convenient" }, res =>{
                 if(res.success){
-                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    var data  = JSON.parse(Decrypt(res.data.results.coverageKey));
                     this.load_reproducible_bar_chart();
                 }
             })

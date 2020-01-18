@@ -92,7 +92,7 @@ export default {
         get_convenience_people_facilities_coverage(){//便民设施覆盖率
             this.http.get("Coverage/getCoverageByCategory", { category: "convenient" }, res =>{
                 if(res.success){
-                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    var data  = JSON.parse(Decrypt(res.data.results.coverageKey));
                     this.get_view_data(data);
                 }
             })

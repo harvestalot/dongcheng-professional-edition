@@ -69,8 +69,8 @@ export default {
     computed: {},
     watch: {},
     created() {
-        this.get_traffic_layer();
         this.get_traffic_facilities_coverage();
+        this.get_traffic_layer();
     },
     methods: {
         get_traffic_layer(){
