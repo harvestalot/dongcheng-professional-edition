@@ -86,6 +86,7 @@ export default {
     }, 
     methods: {
         resetMap(){
+            this.$route.name === "Home" ? document.getElementById("map_tool").style.right = "5px" : document.getElementById("map_tool").style.right = "25.5%";
             window.clearInterval(this.$Basice.timer);
             this.$refs.mainMapChild.mapLayerOption.base.clearMap();//重置地图
             this.$refs.mainMapChild.viewLayerOption.heat.hide();
