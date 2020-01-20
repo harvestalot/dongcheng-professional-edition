@@ -1,7 +1,7 @@
 <!-- 教育设施 -->
 <template>
     <div class="main_content">
-        <div class="echarts_content">
+        <div class="echarts_content animated fadeInRight">
             <div class="echarts_content_sub">
                 <div class="chart_content_box">
                     <radar-chart v-if="chartOption.isSuccess" :radarChartOption="chartOption"></radar-chart>
@@ -77,8 +77,8 @@ export default {
     computed: {},
     watch: {},
     mounted() {
-        this.get_education_layer();
         this.get_education_facilities_coverage();
+        this.get_education_layer();
     },
     methods: {
         get_education_layer(){//教育设施图层

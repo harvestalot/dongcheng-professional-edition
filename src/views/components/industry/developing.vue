@@ -1,7 +1,7 @@
 <!-- 产业发展 -->
 <template>
     <div class="main_content">
-        <div class="echarts_content">
+        <div class="echarts_content animated fadeInRight">
             <div class="echarts_content_sub">
                 <div class="chart_content_box">
                     <div id="industrial_development_pie_content" class="h_100"></div>

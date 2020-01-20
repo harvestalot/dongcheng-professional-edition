@@ -1,7 +1,7 @@
 <!-- 物质文化遗产 -->
 <template>
     <div class="main_content">
-        <div class="echarts_content">
+        <div class="echarts_content animated fadeInRight">
             <div class="echarts_content_sub">
                 <div class="chart_content_box">
                     <div id="cultural_relic_coverage_chart_content" class="h_100"></div>

@@ -1,10 +1,11 @@
 <!-- 胡同环卫 -->
 <template>
     <div class="main_content">
-        <div class="echarts_content">
-            <div class="echarts_content_sub">
+        <div class="echarts_content animated fadeInRight">
+            <div class="echarts_content_sub Hutong_echarts_content_sub">
                 <div id="reproducible_bar_chart_content" class="h_100"></div>
             </div>
+            <div class="source_content">2018年，启动354座公厕改造升级，完成235座。2019年，继续开展”厕所革命“，完成227座公厕改造提升。</div>
         </div>
     </div>
 </template>
@@ -149,5 +150,7 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-
+    .source_content{
+        margin-top: 20px;
+    }
 </style>

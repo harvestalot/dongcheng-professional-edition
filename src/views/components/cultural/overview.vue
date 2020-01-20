@@ -1,7 +1,7 @@
 <!-- 文化资源评估 -- 概览 -->
 <template>
     <div class="main_content">
-        <div class="echarts_content">
+        <div class="echarts_content animated fadeInRight">
             <div class="echarts_content_sub">
                 <div id="cultural_resources_overview_bar_content" class="h_100"></div>
             </div>

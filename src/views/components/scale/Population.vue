@@ -10,7 +10,7 @@
                 <a-select-option value="5">职住比</a-select-option>
             </a-select>
         </div>
-        <div class="echarts_content">
+        <div class="echarts_content animated fadeInRight">
             <div class="echarts_content_sub">
                 <div class="chart_content_box">
                     <div id="pictorial_bar_chart_content" class="h_100"></div>
@@ -18,6 +18,7 @@
                 <div class="chart_content_box">
                     <div id="line_stack_chart_content" class="h_100"></div>
                 </div>
+                <div class="source_content">数据来源：联通手机信令数据</div>
             </div>
         </div>
         <div class="map_legend chromatic_gradient_map_legend" v-if="layer_type_code==5">
@@ -426,6 +427,9 @@ export default {
 }
 </script>
 <style lang='less' scoped>
+    .chart_content_box{
+        height: 48.5%;
+    }
     // .slide-fade-enter-active {
     //     transition: all .3s ease;
     // }

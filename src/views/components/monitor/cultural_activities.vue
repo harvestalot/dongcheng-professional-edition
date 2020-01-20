@@ -15,7 +15,7 @@
                 <a-select-option value="其他">其他</a-select-option>
             </a-select>
         </div>
-        <div class="echarts_content">
+        <div class="echarts_content animated fadeInRight">
             <div class="echarts_content_sub">
                 <div class="chart_content_box">
                     <radar-chart v-if="chartOption.isSuccess" :radarChartOption="chartOption"></radar-chart>

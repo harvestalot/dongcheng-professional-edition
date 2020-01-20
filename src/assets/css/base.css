@@ -59,6 +59,46 @@ a {
     width: 25%;
     height: 100%;
 }
+
+.animated {
+    animation-duration: 1s !important;
+    -webkit-animation-duration: 1s !important;
+    animation-fill-mode: both !important;
+    -webkit-animation-fill-mode: both !important;
+}
+/*从右到左进入*/
+.fadeInRight {
+    animation-name: fadeInRight;
+    -webkit-animation: fadeInRight;
+}
+/*从右到左进入*/
+@keyframes fadeInRight
+{
+    from {
+        opacity: 0;
+        -webkit-transform: translate(1000px,0); 
+        transform: stranslate(1000px,0); 
+    }
+    to {
+        opacity:1;
+        -webkit-transform: translate(0, 0); 
+        transform: stranslate(0, 0); 
+    }
+}
+ 
+@-webkit-keyframes fadeInRight 
+{
+    from {
+        opacity:0;
+       -webkit-transform: translate(1000px,0); 
+        transform: stranslate(1000px,0); 
+    }
+    to {
+        opacity:1;
+        -webkit-transform: translate(0, 0); 
+        transform: stranslate(0, 0); 
+    }
+}
 .main_content .echarts_content{
     width: 104%;
     height: 100%;
@@ -66,11 +106,18 @@ a {
     background-color: rgba(255,255,255,1);
     box-shadow: 0px 0px 8px 0px rgba(188, 142, 94, 1);
     overflow-y: auto;
+    
 }
 .main_content .echarts_content_sub{
     width: 100%;
     height: 100%;
     overflow: hidden;
+}
+.main_content .Hutong_echarts_content_sub{
+    height: 90%;
+}
+.main_content .parking_echarts_content_sub{
+    height: 85%;
 }
 .main_content .layer_content{
     position: absolute;
@@ -127,6 +174,11 @@ a {
 .chart_content_box{
     width: 100%;
     height: 50%;
+}
+.source_content{
+    height: 3%;
+    padding-left: 30px;
+    color: #666;
 }
 /* 分段色差阶梯 */
 .chromatic_gradient span{

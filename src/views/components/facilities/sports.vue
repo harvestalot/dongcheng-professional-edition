@@ -2,7 +2,7 @@
 <!-- 便民设施 -->
 <template>
     <div class="main_content">
-        <div class="echarts_content">
+        <div class="echarts_content animated fadeInRight">
             <div class="echarts_content_sub">
                 <div class="chart_content_box">
                     <radar-chart v-if="chartOption.isSuccess" :radarChartOption="chartOption"></radar-chart>
@@ -64,8 +64,8 @@ export default {
     computed: {},
     watch: {},
     mounted() {
-        this.get_sports_layer();
         this.get_sports_facilities_coverage();
+        this.get_sports_layer();
     },
     methods: {
         get_sports_layer(){

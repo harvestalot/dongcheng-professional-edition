@@ -9,10 +9,11 @@
                 <a-select-option value="4">老旧小区</a-select-option>
             </a-select>
         </div>
-        <div class="echarts_content">
+        <div class="echarts_content animated fadeInRight">
             <div class="echarts_content_sub">
                 <div id="bar_line_stack_chart_content" class="h_100"></div>
             </div>
+            <div class="source_content">数据来源：网络大数据</div>
         </div>
         <div class="map_legend chromatic_gradient_map_legend" v-if="layer_type_code && layer_type_code<4">
              <a-row>
@@ -397,5 +398,7 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-
+    .main_content .echarts_content_sub{
+        height: 97%;
+    }
 </style>

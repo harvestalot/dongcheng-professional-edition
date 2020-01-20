@@ -1,7 +1,7 @@
 <!-- 历史建筑 -->
 <template>
     <div class="main_content">
-        <div class="echarts_content">
+        <div class="echarts_content animated fadeInRight">
             <div class="echarts_content_sub">
                 <div class="chart_content_box">
                     <radar-chart v-if="chartOption.isSuccess" :radarChartOption="chartOption"></radar-chart>

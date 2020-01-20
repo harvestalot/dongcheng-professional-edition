@@ -1,10 +1,15 @@
 <!-- 停车场 -->
 <template>
     <div class="main_content">
-        <div class="echarts_content">
-            <div class="echarts_content_sub">
+        <div class="layer_content">
+            <a-input allowClear placeholder="请输入停车场名称" v-model="parking_name" style="width: 200px;marginRight:10px;" />
+            <a-button type="primary" @click="handle_search_query">查询</a-button>
+        </div>
+        <div class="echarts_content animated fadeInRight">
+            <div class="echarts_content_sub parking_echarts_content_sub">
                 <div id="bar_stack_chart_content" class="h_100"></div>
             </div>
+            <div class="source_content">挖潜地区停车资源，增加共享车位3300个，盘活6块拆迁滞留地建设13处停车场，新增停车位3800余个。王府井地区成为全市首个“无停车街区”，全区无停车胡同累计达到21条。大力推进路侧停车管理改革，规划路侧停车位5731个。</div>
         </div>
         <div class="map_legend">
              <a-row>
@@ -46,6 +51,8 @@ export default {
             markers:[],
             parkingTypeName : ["工作地停车场", "商业停车场", "路边停车场", "小区停车场", "其他公共停车场"],
             street_names: [],
+            parking_data: [],
+            parking_name: "",
         };
     },
     computed: {},
@@ -55,38 +62,49 @@ export default {
         this.polygonLayer? this.polygonLayer.hide():"";
         this.trafficLayer? this.trafficLayer.hide():"";
         this.load_parking_bar_chart();
-        this.get_parking_layer();
+        this.get_parking_data();
     },
     methods: {
-        get_parking_layer(){
-            this.http.getLocalhostJson("/static/json/parking.json", res =>{
-                for(var i = 0; i < res.length; i++){
-                    var item = res[i];
-                    var marker = new AMap.Marker({
-                        map: this.mainMapLayer,
-                        icon: new AMap.Icon({
-                            size: new AMap.Size(16, 16),
-                            image: this.$Basice.icon_url + "/static/img/parking/"+
-                                (item.type === '小区停车场'?'1':
-                                (item.type === '商业停车场'?'2':
-                                (item.type === '路边停车场'?'3':
-                                (item.type === '工作地停车场'?'4':
-                                '5'))))+".png",
-                            imageOffset: new AMap.Pixel(0, 0),
-                            imageSize: new AMap.Size(-8, -8)
-                        }),
-                        position: item.lnglat,
-                        offset: new AMap.Pixel(-10, -10),
-                        extData:item
-                    });
-                    var _this = this;
-                    marker.on('click', function (ev) {
-                        var properties = ev.target.B.extData;
-                        _this.load_info_window(properties, ev.lnglat);
-                    });
-                    this.markers.push(marker);
-                }
+        handle_search_query(){//搜索查询停车场
+            const search_parking_data = this.parking_data.filter( (item) => {
+                return item.name.indexOf(this.parking_name) !== -1;
             })
+            this.get_parking_layer(search_parking_data);
+        },
+        get_parking_data(){
+            this.http.getLocalhostJson("/static/json/parking.json", res =>{
+                this.parking_data = res;
+                this.get_parking_layer(this.parking_data);
+            })
+        },
+        get_parking_layer(data){
+            this.mainMapLayer.remove(this.markers);
+            for(var i = 0; i < data.length; i++){
+                var item = data[i];
+                var marker = new AMap.Marker({
+                    map: this.mainMapLayer,
+                    icon: new AMap.Icon({
+                        size: new AMap.Size(16, 16),
+                        image: this.$Basice.icon_url + "/static/img/parking/"+
+                            (item.type === '小区停车场'?'1':
+                            (item.type === '商业停车场'?'2':
+                            (item.type === '路边停车场'?'3':
+                            (item.type === '工作地停车场'?'4':
+                            '5'))))+".png",
+                        imageOffset: new AMap.Pixel(0, 0),
+                        imageSize: new AMap.Size(-8, -8)
+                    }),
+                    position: item.lnglat,
+                    offset: new AMap.Pixel(-10, -10),
+                    extData:item
+                });
+                var _this = this;
+                marker.on('click', function (ev) {
+                    var properties = ev.target.B.extData;
+                    _this.load_info_window(properties, ev.lnglat);
+                });
+                this.markers.push(marker);
+            }
         },
         load_info_window(properties, center){
             var info = [];
@@ -181,5 +199,7 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-
+    .source_content{
+        margin-top: 20px;
+    }
 </style>

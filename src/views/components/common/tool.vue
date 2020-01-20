@@ -1,6 +1,6 @@
 <!-- 地图工具 -->
 <template>
-    <div class='map_tool'>
+    <div id="map_tool" class='map_tool'>
         <div>
             <a-checkbox-group
             :options="tool_options"

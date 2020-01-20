@@ -6,9 +6,11 @@
                 <a-select-option v-for="(value, index) in all_poi_type" :value="value" :key="index">{{ value }}</a-select-option>
             </a-select>
         </div>
-        <div class="echarts_content">
+        <div class="echarts_content animated fadeInRight">
             <div class="echarts_content_sub">
-                
+                <div class="chart_content_box">
+                    <radar-chart v-if="chartOption.isSuccess" :radarChartOption="chartOption"></radar-chart>
+                </div>
             </div>
         </div>
         <!-- POI点列表 -->
@@ -18,19 +20,38 @@
 
 <script>
 
+import RadarChart from "../common/RadarChart";
 export default {
-    components: {},
+    components: {
+        RadarChart,
+    },
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
 	        all_poi_type: ["餐饮服务", "购物服务", "生活服务", "体育休闲服务",
 		        "商务住宅", "科教文化服务", "交通设施服务", "金融保险服务", "公共设施"],
 	        current_pio_type: "餐饮服务",
+            chartOption:{
+                isSuccess:false,
+                title_1:"各街道各类个数统计",
+                street_name_data: [],
+                radar_chart_indicator_data: [],
+                lenged_data: ["超市", "菜站"],
+                legend_selected:{
+                    '超市': true,
+                    '菜站': false,
+                },
+                pie_comprehensive_data: {
+                    "超市":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "菜站":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                },
+            },
         };
     },
     computed: {},
     watch: {},
     mounted() {
+        this.get_aggregation_degree_statistics();
         this.get_dongcheng_polygon_layer();
     },
     methods: {
@@ -65,7 +86,34 @@ export default {
                     })
                 })
             })
-        }
+        },
+        get_aggregation_degree_statistics(){//各街道产业数量统计
+            this.http.get("Coverage/getCoverageByCategory", { category: "convenient" }, res =>{
+                if(res.success){
+                    var data  = JSON.parse(Decrypt(res.data.results.coverageKey));
+                    this.get_view_data(data);
+                }
+            })
+        },
+        get_view_data(result_data){
+            for(var i = 0; i < result_data.length; i++){
+                for(var key in result_data[i]){
+                    this.chartOption.street_name_data.push(key.replace("街道",""));
+                    this.chartOption.radar_chart_indicator_data.push({
+                        name: key.replace("街道",""),
+                        max:100,
+                        color:'#222',
+                        rotate:90
+                    })
+                    if(result_data[i][key].length > 0){
+                        for(var j = 0; j < result_data[i][key].length; j++){
+                            this.chartOption.pie_comprehensive_data[result_data[i][key][j].CATEGORY_NAME][i] = result_data[i][key][j].COVERAGE.toFixed(2);
+                        }
+                    }
+                }
+                this.chartOption.isSuccess = true;
+            }
+        },
     },
     created() {},
 }
