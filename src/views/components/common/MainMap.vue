@@ -18,6 +18,7 @@ export default {
         return {
             mapLayerOption:{
                 base:"",
+                streetArea:"",
                 streetBoundary:"",
                 streetName:"",
                 streetRoad:"",
@@ -52,15 +53,21 @@ export default {
                 resizeEnable:true,
                 center: [116.412255,39.908886],
                 zoom: 12,
+                zooms: [12, 13]
             });
             this.init_layer();
         },
         init_layer(){
+            this.mapLayerOption.streetArea = new Loca.PolygonLayer({//社区街道边界图层
+                map: this.mapLayerOption.base,
+                eventSupport:true,
+            });
             this.mapLayerOption.streetBoundary = new Loca.LineLayer({//社区街道边界图层
                 map: this.mapLayerOption.base,
             });
             this.mapLayerOption.streetName = new Loca.LabelsLayer({//社区街道名字图层
                 map: this.mapLayerOption.base,
+                zIndex: 10,
             });
             this.mapLayerOption.streetRoad = new Loca.LineLayer({//社区街道路网图层
                 map: this.mapLayerOption.base,
@@ -79,7 +86,8 @@ export default {
             });
             this.viewLayerOption.polygon = new Loca.PolygonLayer({//平面图层
                 map: this.mapLayerOption.base,
-                // zIndex: 15,
+                eventSupport:true,
+                zIndex: 100,
             });
             this.viewLayerOption.Icon = new Loca.IconLayer({
                 map: this.mapLayerOption.base
@@ -93,6 +101,8 @@ export default {
                 interval:3600,
             });
             this.get_street_boundary_layer();
+            this.get_street_name_layer();
+            this.get_street_area_layer();
         },
         get_street_land_layer(){//社区现状用地图层
             var colors = ["#A900E6", "#FF0000", "#0084A8", "#FFFF00", "#730000", "#9C9C9C","#FFAA00"];
@@ -142,15 +152,53 @@ export default {
                 this.mapLayerOption.streetBoundary.setData(res, {lnglat: 'lnglat'});
                 this.mapLayerOption.streetBoundary.setOptions({
                     style: {
-                        // height: function () {
-                        //     return Math.random() * 20000;
-                        // },
+                        borderWidth: 2,
                         opacity: 1,
                         color:"#d66349",
                     },
                 });
                 this.mapLayerOption.streetBoundary.render();
                 this.mapLayerOption.streetBoundary.show();
+            })
+        },
+        get_street_name_layer(){//社区名字文字图层
+            this.http.getLocalhostJson("/static/json/street_name_data.json", res =>{
+                //添加文字标记图层
+                this.mapLayerOption.streetName.setData(res, {
+                    lnglat: 'lnglat'
+                }).setOptions({
+                    style: {
+                        direction: 'center',
+                        offset: [0, 0],
+                        text: function (item) {
+                            return item.value.name;
+                        },
+                        fillColor: "#F319A0",
+                        fontSize: 15,
+                        strokeWidth: 0
+                    }
+                }).render();
+                // this.mapLayerOption.streetName.setzIndex(100);
+                this.mapLayerOption.streetName.show();
+            })
+        },
+        get_street_area_layer(){//社区街道面图层
+            this.http.getLocalhostJson("/static/json/street_boundary_data.json", res =>{
+                this.mapLayerOption.streetArea.setMap(this.mapLayerOption.base);
+                this.mapLayerOption.streetArea.setData(res, {lnglat: 'lnglat'});
+                this.mapLayerOption.streetArea.setOptions({
+                    style: {
+                        opacity: 0.1,
+                        color:"#85ccc8",
+                    },
+                });
+                this.mapLayerOption.streetArea.render();
+                this.mapLayerOption.streetArea.show();
+                const _this = this;
+                _this.mapLayerOption.streetArea.on("click", function(ev){
+                    var properties = ev.rawData.properties;
+                    _this.load_info_window(properties, properties.lnglat);
+                })
             })
         },
         get_street_road_layer(){//社区路网图层
@@ -178,10 +226,27 @@ export default {
             })
         },
         viewMapToolLayer(){
+            if(this.toolOption.tool_checked.indexOf("street") > -1){
+                this.get_street_area_layer();
+                this.get_street_boundary_layer();
+                this.get_street_name_layer();
+            }else{
+                this.mapLayerOption.streetArea.setMap(null);
+                this.mapLayerOption.streetBoundary.hide();
+                this.mapLayerOption.streetName.hide();
+            }
             this.toolOption.tool_checked.indexOf("land") > -1? this.get_street_land_layer(): this.mapLayerOption.streetLand.hide();
-            this.toolOption.tool_checked.indexOf("street") > -1? this.get_street_boundary_layer(): this.mapLayerOption.streetBoundary.hide();
+            // this.toolOption.tool_checked.indexOf("street") > -1? : 
             this.toolOption.tool_checked.indexOf("road") > -1? this.get_street_road_layer(): this.mapLayerOption.streetRoad.hide();
-        }
+        },
+        load_info_window(properties, center){
+            var info = [];
+            info.push('<div class="info_window">名称：'+properties.name+'</div>');
+            var infoWindow = new AMap.InfoWindow({
+                content: info.join(""),  //使用默认信息窗体框样式，显示信息内容
+            });
+            infoWindow.open(this.mapLayerOption.base, center);
+        },
     }
 }
 </script>

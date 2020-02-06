@@ -16,6 +16,7 @@ export default {
     data(){
         return{
             title: this.radarChartOption.title_1 || "",
+            radar_radius: this.radarChartOption.radar_radius || "60%",
             lenged_data: this.radarChartOption.lenged_data || [],
             radar_chart_indicator_data: this.radarChartOption.radar_chart_indicator_data || [],
             pie_comprehensive_data: this.radarChartOption.pie_comprehensive_data || {},
@@ -39,11 +40,12 @@ export default {
                 },
                 tooltip: {
                     show: true,
-                    trigger: "item"
+                    trigger: "item",
+                    confine: true,
                 },
                 radar: {
                     center: ["50%", "63%"],
-                    radius: "60%",
+                    radius: this.radar_radius,
                     startAngle: 90,
                     splitNumber: 4,
                     shape: "circle",

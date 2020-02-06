@@ -97,9 +97,10 @@ export default {
             })
         },
         get_green_land_coverage(){//各街道绿地数据
-            this.http.get("Coverage/getCoverageByCategory", { category: "convenient" }, res =>{
+            this.http.get("publicSpace/getGreenLandCoverage", { category: "convenient" }, res =>{
                 if(res.success){
-                    var data  = JSON.parse(Decrypt(res.data.results.coverageKey));
+                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    this.chart_data = data;
                     this.load_green_land_bar_chart();
                     this.load_green_land_bar_line_chart();
                 }
@@ -154,7 +155,7 @@ export default {
             for(var i = 0; i < this.chart_data.length; i++){
                 var item = this.chart_data[i];
                 bar_option.xAxis.data.push(item.name.replace("街道",""));
-                bar_option.series.data.push(item.value);
+                bar_option.series.data.push(item.greenCoverage500);
             }
             barChart.setOption(bar_option, true);
             window.onresize = function(){
@@ -246,8 +247,8 @@ export default {
             for(var i = 0; i < this.chart_data.length; i++){
                 var item = this.chart_data[i];
                 bar_option.xAxis.data.push(item.name.replace("街道",""));
-                bar_option.series[0].data.push(item.value);
-                bar_option.series[1].data.push(item.per_area);
+                bar_option.series[0].data.push(item.greenCoverage);
+                bar_option.series[1].data.push(item.areaPerson);
             }
             barChart.setOption(bar_option, true);
             window.onresize = function(){

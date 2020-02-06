@@ -84,7 +84,9 @@ export default {
     watch: {},
     methods: {},
     created() {},
-    mounted() {},
+    mounted() {
+        document.getElementById("views").style["overflow-y"] = "auto";
+    },
 }
 </script>
 <style scoped>

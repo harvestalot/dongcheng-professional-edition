@@ -80,7 +80,7 @@ export default {
         get_statistics_chart_data(){//获取统计图表数据
             this.http.get("culturaheritage/getCoverageByLevels", {}, res =>{//按等级
                 if(res.success){
-                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    var data  = JSON.parse(Decrypt(res.data.results.key));
                     this.level_data_total = data.totalNumber;
                     this.get_view_data(data);
                     // for(var i = 0; i < data.list.length; i++){
@@ -94,7 +94,13 @@ export default {
             })
             this.http.get("culturaheritage/getCoverageByYears", {}, res =>{//按年代
                 if(res.success){
-                    this.years_ring_data  = JSON.parse(Decrypt(res.data.results.resultKey)).list;
+                    var data = JSON.parse(Decrypt(res.data.results.key)).list;
+                    data.forEach( (item) => {
+                        this.years_ring_data.push({
+                            name: item.YEARS,
+                            value: item.TOTAL,
+                        }) ;
+                    })
                     this.load_years_pie_chart();
                 }
             })
@@ -103,10 +109,6 @@ export default {
             this.level_data.push({
                 name:result_data.list[2].LEVELS,
                 value:result_data.list[2].TOTAL
-            });
-            this.level_data.push({
-                name:result_data.list[4].LEVELS,
-                value:result_data.list[4].TOTAL
             });
             this.level_data.push({
                 name:result_data.list[3].LEVELS,
@@ -254,12 +256,12 @@ export default {
                     show: true,
                     icon:"circle",
                     top: "center",
-                    left: '70%',
+                    right: '5%',
                     data: arrName,
                     width:50,
-                    itemGap: 10,
+                    itemGap: 20,
                     formatter: function(name) {
-                        return "{title|" + name + "}\n{value|" + (objData[name].value) +"}  {title|个}"
+                        return "{title|" + name.slice(0,4) + "}\n{value|" + (objData[name].value) +"}  {title|个}"
                     },
                     textStyle: {
                         rich: {
@@ -282,8 +284,8 @@ export default {
                     formatter: "{a}<br>{b}:{c}({d}%)"
                 },
                 grid: {
-                    top: '19%',
-                    bottom: '46%',
+                    top: '18%',
+                    bottom: '50%',
                     left: "35%",
                     containLabel: false
                 },
@@ -318,97 +320,206 @@ export default {
             }
         },
         load_years_pie_chart(){//按年代统计饼状图
-        var myChart = echarts.init(document.getElementById("cultural_relic_chart_content"));
-            var dataStyle = {
-                normal: {
+            var myChart = echarts.init(document.getElementById("cultural_relic_chart_content"));
+            // var dataStyle = {
+            //     normal: {
+            //         label: {
+            //             show: false
+            //         },
+            //         labelLine: {
+            //             show: false
+            //         },
+            //         shadowBlur: 0,
+            //         shadowColor: '#203665'
+            //     }
+            // };
+            // var option = {
+            //     title:{ ...{
+            //         text: "物质文化遗产(按年代)",
+            //     }, ...this.$Basice.echart_title},
+            //     series: []
+            // };
+            // for(var i = 0; i < this.years_ring_data.length; i++){
+            //     var item = this.years_ring_data[i];
+            //     option.series.push({
+            //         name: item.YEARS,
+            //         type: 'pie',
+            //         clockWise: false,
+            //         radius: [50, 60],
+            //         itemStyle: dataStyle,
+            //         hoverAnimation: false,
+            //         center: ( i === 0? ['25%', '75%']:
+            //             (i === 1? ['25%', '30%']:['75%', '30%'])),
+            //         data: [
+            //         {
+            //             value: item.TOTAL,
+            //             label: {
+            //                 normal: {
+            //                     rich: {
+            //                         a: {
+            //                             color: '#3a7ad5',
+            //                             align: 'center',
+            //                             fontSize: 20,
+            //                             fontWeight: "bold"
+            //                         },
+            //                         b: {
+            //                             color: '#222',
+            //                             align: 'center',
+            //                             fontSize: 16
+            //                         }
+            //                     },
+            //                     formatter: function(params){
+            //                         var formatter_str = "";
+            //                         if(params.seriesName === "其他"){
+            //                             formatter_str = "{b|其他}\n\n"+"{a|"+params.value+"个}";
+            //                         }else if(params.seriesName === "明"){
+            //                             formatter_str = "{b|明}\n\n"+"{a|"+params.value+"个}";
+            //                         }else if(params.seriesName === "清"){
+            //                             formatter_str = "{b|清}\n\n"+"{a|"+params.value+"个}";
+            //                         }else if(params.seriesName === "民国"){
+            //                             formatter_str = "{b|民国}\n\n"+"{a|"+params.value+"个}";
+            //                         }
+            //                         return formatter_str;
+            //                     },
+            //                     position: 'center',
+            //                     show: true,
+            //                     textStyle: {
+            //                         fontSize: '14',
+            //                         fontWeight: 'normal',
+            //                         color: '#222'
+            //                     }
+            //                 }
+            //             },
+            //             itemStyle: {
+            //                 normal: {
+            //                     color: '#2c6cc4',
+            //                     shadowColor: '#2c6cc4',
+            //                     shadowBlur: 0
+            //                 }
+            //             }
+            //         }, {
+            //             value: this.level_data_total,
+            //             name: 'invisible',
+            //             itemStyle: {
+            //                 normal: {
+            //                     color: '#eaeaea'
+            //                 },
+            //                 emphasis: {
+            //                     color: '#eaeaea'
+            //                 }
+            //             }
+            //         }]
+            //     });
+            // }
+            const _this = this;
+            var scale = 1;
+            var rich = {
+                yellow: {
+                    color: "#ffc72b",
+                    fontSize: 20 * scale,
+                    padding: [5, 4],
+                    align: 'center'
+                },
+                total: {
+                    color: "#ffc72b",
+                    fontSize: 30 * scale,
+                    align: 'center'
+                },
+                white: {
+                    color: "#fff",
+                    align: 'center',
+                    fontSize: 14 * scale,
+                    padding: [21, 0]
+                },
+                name: {
+                    color: "#F0B33C",
+                    align: 'center',
+                    fontSize: 12 * scale,
+                },
+                blue: {
+                    color: '#49dff0',
+                    fontSize: 14 * scale,
+                    align: 'center',
+                },
+                hr: {
+                    borderColor: '#0b5263',
+                    width: '100%',
+                    borderWidth: 1,
+                    height: 0,
+                }
+            }
+            var option = {
+                title: [{...{
+                        text: "物质文化遗产(按年代)",
+                    }, ...this.$Basice.echart_title
+                },{
+                    subtext: "总数",
+                    left:'center',
+                    top:'50%',
+                    padding:[15,0],
+                    subtextStyle:{
+                        color:'#000',
+                        fontSize:18*scale,
+                        align:'center'
+                    },
+                }],
+                legend: {
+                    selectedMode:false,
+                    formatter: function(name) {
+                        var total = 0; //各科正确率总和
+                        var averagePercent; //综合正确率
+                        _this.years_ring_data.forEach(function(value, index, array) {
+                            total += value.value;
+                        });
+                        return '{total|' + total + '}';
+                    },
+                    data: [_this.years_ring_data[0].name],
+                    // data: ['高等教育学'],
+                    // itemGap: 50,
+                    left: 'center',
+                    top: 'center',
+                    icon: 'none',
+                    align:'center',
+                    textStyle: {
+                        color: "#fff",
+                        fontSize: 16 * scale,
+                        rich: rich
+                    },
+                },
+                series: [{
+                    // name: '总考生数量',
+                    type: 'pie',
+                    radius: ['42%', '50%'],
+                    // hoverAnimation: false,
+                    clockwise : false,
+                    color: this.$Basice.colors,
                     label: {
-                        show: false
+                        normal: {
+                            formatter: function(params, ticket, callback) {
+                                var total = 0; //考生总数量
+                                var percent = 0; //考生占比
+                                _this.years_ring_data.forEach(function(value, index, array) {
+                                    total += value.value;
+                                });
+                                percent = ((params.value / total) * 100).toFixed(1);
+                                // return '{name|' + params.name + '}\n{hr|}\n{yellow|' + params.value + '}\n{blue|' + percent + '%}';
+                                return '{name|' + params.name + '：}{blue|' + params.value + '}';
+                            },
+                            rich: rich
+                        },
                     },
                     labelLine: {
-                        show: false
+                        normal: {
+                            length: 15 * scale,
+                            length2: 10,
+                            lineStyle: {
+                                color: '#0b5263'
+                            }
+                        }
                     },
-                    shadowBlur: 0,
-                    shadowColor: '#203665'
-                }
+                    data: _this.years_ring_data
+                }]
             };
-            var option = {
-                title:{ ...{
-                    text: "物质文化遗产(按年代)",
-                }, ...this.$Basice.echart_title},
-                series: []
-            };
-            for(var i = 0; i < this.years_ring_data.length; i++){
-                var item = this.years_ring_data[i];
-                option.series.push({
-                    name: item.YEARS,
-                    type: 'pie',
-                    clockWise: false,
-                    radius: [50, 60],
-                    itemStyle: dataStyle,
-                    hoverAnimation: false,
-                    center: ( i === 0? ['25%', '75%']:
-                        (i === 1? ['25%', '30%']:['75%', '30%'])),
-                    data: [
-                    {
-                        value: item.TOTAL,
-                        label: {
-                            normal: {
-                                rich: {
-                                    a: {
-                                        color: '#3a7ad5',
-                                        align: 'center',
-                                        fontSize: 20,
-                                        fontWeight: "bold"
-                                    },
-                                    b: {
-                                        color: '#222',
-                                        align: 'center',
-                                        fontSize: 16
-                                    }
-                                },
-                                formatter: function(params){
-                                    var formatter_str = "";
-                                    if(params.seriesName === "其他"){
-                                        formatter_str = "{b|其他}\n\n"+"{a|"+params.value+"个}";
-                                    }else if(params.seriesName === "明"){
-                                        formatter_str = "{b|明}\n\n"+"{a|"+params.value+"个}";
-                                    }else if(params.seriesName === "清"){
-                                        formatter_str = "{b|清}\n\n"+"{a|"+params.value+"个}";
-                                    }else if(params.seriesName === "民国"){
-                                        formatter_str = "{b|民国}\n\n"+"{a|"+params.value+"个}";
-                                    }
-                                    return formatter_str;
-                                },
-                                position: 'center',
-                                show: true,
-                                textStyle: {
-                                    fontSize: '14',
-                                    fontWeight: 'normal',
-                                    color: '#222'
-                                }
-                            }
-                        },
-                        itemStyle: {
-                            normal: {
-                                color: '#2c6cc4',
-                                shadowColor: '#2c6cc4',
-                                shadowBlur: 0
-                            }
-                        }
-                    }, {
-                        value: this.level_data_total,
-                        name: 'invisible',
-                        itemStyle: {
-                            normal: {
-                                color: '#eaeaea'
-                            },
-                            emphasis: {
-                                color: '#eaeaea'
-                            }
-                        }
-                    }]
-                });
-            }
             myChart.setOption(option, true);
             window.onresize = function(){
                 myChart.resize();

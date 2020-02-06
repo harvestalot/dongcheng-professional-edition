@@ -165,6 +165,7 @@ a {
     border: 1px solid #F0B33C;
     border-radius: 6px;
     background-color: #fff;
+    cursor: pointer;
 }
 .current_time_point{
     background-color: #F0B33C;
@@ -187,24 +188,27 @@ a {
     height: 12px;
 }
 .chromatic_gradient:nth-child(1) span{
-    background-color: #83AF9B;
+    background-color: #C8C8A9;
 }
 .chromatic_gradient:nth-child(2) span{
-    background-color: #8A977B;
+    background-color: #83AF9B;
 }
 .chromatic_gradient:nth-child(3) span{
-    background-color: #F9CDAD;
+    background-color: #8A977B;
 }
 .chromatic_gradient:nth-child(4) span{
-    background-color: #FC9D9A;
+    background-color: #F9CDAD;
 }
 .chromatic_gradient:nth-child(5) span{
-    background-color: #E58308;
+    background-color: #FC9D9A;
 }
 .chromatic_gradient:nth-child(6) span{
-    background-color: #DC5712;
+    background-color: #E58308;
 }
 .chromatic_gradient:nth-child(7) span{
+    background-color: #DC5712;
+}
+.chromatic_gradient:nth-child(8) span{
     background-color: #FE4365;
 }
 .main_content .chromatic_gradient_map_legend{
@@ -228,4 +232,7 @@ a {
 .introduction_content .introduction_title{
     font-size: 26px;
     text-align: center;
+}
+.info_window{
+    margin: 10px 10px;
 }

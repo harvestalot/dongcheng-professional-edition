@@ -19,8 +19,8 @@
                     </a-col>
                     <a-col :span="6" class="h_100">
                         <nav id="nav" class="nav">
-                            <router-link :to="{ name: 'Home' }" class="nav_item">首页</router-link>
-                            <span class="nav_item" @click="introduction_visible = !introduction_visible">平台简介</span>
+                            <router-link :to="{ name: 'Home' }" class="nav_item"><a-badge status="default"/>首页</router-link>
+                            <span class="nav_item" @click="introduction_visible = !introduction_visible"><a-badge status="default"/>平台简介</span>
                         </nav>
                     </a-col>
                     <!-- <div class="introduction"></div> -->
@@ -86,13 +86,19 @@ export default {
     }, 
     methods: {
         resetMap(){
-            this.$route.name === "Home" ? document.getElementById("map_tool").style.right = "5px" : document.getElementById("map_tool").style.right = "25.5%";
+            document.getElementById("views").style.overflow = "hidden";
+            if(this.$route.name === "Home" || this.$route.name === "RoadConditionTraffic"){
+                document.getElementById("map_tool").style.right = "5px";
+            }else{
+                document.getElementById("map_tool").style.right = "25.5%";
+            }
             window.clearInterval(this.$Basice.timer);
             this.$refs.mainMapChild.mapLayerOption.base.clearMap();//重置地图
             this.$refs.mainMapChild.viewLayerOption.heat.hide();
             this.$refs.mainMapChild.viewLayerOption.timelineHeat.hide();
             this.$refs.mainMapChild.viewLayerOption.polygon.hide();
             this.$refs.mainMapChild.viewLayerOption.traffic.hide();
+            this.$refs.mainMapChild.toolOption.tool_checked = ["street"];
         },
         reload(){
             this.isRouterAlive = false;
@@ -185,5 +191,12 @@ export default {
 	bottom: 10px;
 	color: #666;
 	font-size: 14px;
+}
+</style>
+<style >
+.nav .ant-badge-status-default{
+    width: 8px;
+    height: 8px;
+    background-color: #000;
 }
 </style>

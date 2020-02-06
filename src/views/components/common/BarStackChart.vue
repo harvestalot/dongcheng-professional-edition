@@ -15,6 +15,7 @@ export default {
     },
     data(){
         return{
+            grid: this.barStackChartOption.grid || "",
             title: this.barStackChartOption.title_2 || "",
             street_name_data: this.barStackChartOption.street_name_data || [],
             lenged_data: this.barStackChartOption.lenged_data || [],
@@ -42,7 +43,7 @@ export default {
                     ...{ data: this.lenged_data},
                     ...this.$Basice.legend
                 },
-                grid: this.$Basice.grid,
+                grid: this.grid? { ...this.$Basice.grid, ...this.grid } : this.$Basice.grid,
                 xAxis:{
                     type : 'category',
                     inverse: true,

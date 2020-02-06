@@ -207,7 +207,7 @@ export default {
                 this.polygonLayer.setData(res, {lnglat: 'lnglat'});
                 this.polygonLayer.setOptions({
                     style: {
-                        // opacity: 0.5,
+                        opacity: 0.5,
                         color: function (item) {
                             var value = item.value.value;
                             var colors = _this.$Basice.chromatic_gradient;
@@ -249,15 +249,15 @@ export default {
             })
         },
         get_statistics_chart_data(){//获取统计图表数据
-            this.http.get("parking/geParkingList", {}, res =>{
+            this.http.get("/jobResidenceRatio/getjobResidenceRatio", {}, res =>{
                 if(res.success){
                     var data  = JSON.parse(Decrypt(res.data.results.resultKey));
                     for(var i = 0; i < data.length; i++){
                         var item = data[i];
-                        this.street_names.push(item.streetName.split("街道")[0]);
-                        this.office_residence_ratio_data.push(item.commercialParking);
-                        this.line_chart_data["居住人口就业地"].push(item.jobParking);
-                        this.line_chart_data["就业人口居住地"].push(item.communityParking);
+                        this.street_names.push(item.town.split("街道")[0]);
+                        this.office_residence_ratio_data.push((item.jobResidenceRatio*1).toFixed(1));
+                        this.line_chart_data["居住人口就业地"].push(item.liveEmployment);
+                        this.line_chart_data["就业人口居住地"].push(item.employmentLive);
                     }
                     this.get_pictorial_bar_chart();
                     this.get_line_stack_chart();
@@ -304,7 +304,7 @@ export default {
                             show: true,
                             position: 'top',
                             textStyle: {
-                                fontSize: 16,
+                                fontSize: 12,
                                 color: this.$Basice.colors[0],
                             }
                         },
@@ -358,7 +358,7 @@ export default {
                     ...{ data: this.legend_data},
                     ...this.$Basice.legend
                 },
-                grid: this.$Basice.grid,
+                grid: { ...this.$Basice.grid, ...{ left: 60 }},
                 xAxis: {
                     type : 'category',
                     data: this.street_names,

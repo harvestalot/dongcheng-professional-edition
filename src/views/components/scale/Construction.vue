@@ -130,7 +130,7 @@ export default {
                 this.polygonLayer.setData(res,{lnglat: 'lnglat'});
                 this.polygonLayer.setOptions({
                     style: {
-                        // opacity: 0.5,
+                        opacity: 0.5,
                         color: function (item) {
                             var value = item.value.volume_ratio;
                             var colors = _this.$Basice.chromatic_gradient;
@@ -174,7 +174,7 @@ export default {
                 this.polygonLayer.setData(res,{lnglat: 'lnglat'});
                 this.polygonLayer.setOptions({
                     style: {
-                        // opacity: 0.5,
+                        opacity: 0.5,
                         color: function (item) {
                             var value = item.value.density;
                             var colors = _this.$Basice.chromatic_gradient;
@@ -275,14 +275,14 @@ export default {
             })
         },
         get_statistics_chart_data(){//获取统计图表数据
-            this.http.get("parking/geParkingList", {}, res =>{
+            this.http.get("/jobResidenceRatio/getjobResidenceRatio", {}, res =>{
                 if(res.success){
                     var data  = JSON.parse(Decrypt(res.data.results.resultKey));
                     for(var i = 0; i < data.length; i++){
                         var item = data[i];
-                        this.street_names.push(item.streetName.split("街道")[0]);
-                        this.buildings_density_data.push(item.jobParking);
-                        this.buildings_volume_ratio_data.push(item.communityParking/100);
+                        this.street_names.push(item.town.split("街道")[0]);
+                        this.buildings_density_data.push(item.buildingDensity);
+                        this.buildings_volume_ratio_data.push(item.plotRatio);
                     }
                     this.get_line_bar_stack_chart();
                 }

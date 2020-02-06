@@ -27,8 +27,11 @@
 
 <script>
 
+import RadarChart from "../common/RadarChart";
 export default {
-    components: {},
+    components: {
+        RadarChart,
+    },
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
@@ -37,6 +40,7 @@ export default {
             chartOption:{
                 isSuccess:false,
                 title_1:"各街道文化活动覆盖率对比图",
+                radar_radius:"55%",
                 street_name_data: [],
                 radar_chart_indicator_data: [],
                 lenged_data: ["音乐", "戏剧", "展览", "电影","公益", "讲座", "聚会", "课程", "其他"],
@@ -93,10 +97,10 @@ export default {
                     style: {
                         radius: 20,
                         color: {
-                            0.1: '#9DB578',
-                            0.3: '#EAC736',
-                            0.6: '#E28B4A',
-                            1: '#D94E5D',
+                            0.1: '#0af3f3',
+                            0.3: '#13fc03',
+                            0.6: '#b3fd00',
+                            1: '#ff6666',
                         },
                         opacity:[0.4,0.7]
                     }
@@ -130,12 +134,12 @@ export default {
                 this.chartOption.street_name_data.push(item.streetName.replace("街道",""));
                 this.chartOption.radar_chart_indicator_data.push({
                     name: item.streetName.replace("街道",""),
-                    max:100,
+                    // max:100,
                     color:'#222',
                     rotate:90
                 })
                 for(var key in lenged_english_data){
-                    this.chartOption.pie_comprehensive_data[lenged_english_data[item[key]]][i] = item[key];
+                    this.chartOption.pie_comprehensive_data[lenged_english_data[key]][i] = item[key];
                 }
                 this.chartOption.isSuccess = true;
             }

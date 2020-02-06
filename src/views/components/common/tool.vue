@@ -1,13 +1,13 @@
 <!-- 地图工具 -->
 <template>
     <div id="map_tool" class='map_tool'>
-        <div>
+        <div >
             <a-checkbox-group
             :options="tool_options"
-            :defaultValue="toolOption.tool_checked"
+            :value="toolOption.tool_checked"
             @change="toolOption.change"
             >
-                <span style="color: red" slot="label" slot-scope="{value}">{{value}}</span>
+                <!-- <span slot="label" slot-scope="{value}">{{value}}</span> -->
             </a-checkbox-group>
         </div>
         <div class="mt_10">
@@ -34,10 +34,15 @@ export default {
     data() {
         return {
             tool_options,
+            tool_checked: ["streeet"],
         };
     },
     computed: {},
-    watch: {},
+    watch: { 
+        'toolOption.tool_checked':function(value){
+           value? this.toolOption.change(value) : '';
+        }
+    },
     methods: {
     },
     created() {},

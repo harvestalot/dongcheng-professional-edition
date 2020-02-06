@@ -13,8 +13,24 @@
                     &nbsp;寺庙宫观
                 </a-col>
                 <a-col :span="12">
+                    <img src="../../../../static/img/cultural/jiaotang.png" alt="">
+                    &nbsp;教堂
+                </a-col>
+                <a-col :span="12" class="mt_10">
+                    <img src="../../../../static/img/cultural/qingzhensi.png" alt="">
+                    &nbsp;清真寺
+                </a-col>
+                <a-col :span="12" class="mt_10">
                     <img src="../../../../static/img/cultural/guju.png" alt="">
                     &nbsp;故居
+                </a-col>
+                <a-col :span="12" class="mt_10">
+                    <img src="../../../../static/img/cultural/paifang.png" alt="">
+                    &nbsp;牌楼
+                </a-col>
+                <a-col :span="12" class="mt_10">
+                    <img src="../../../../static/img/cultural/citang.png" alt="">
+                    &nbsp;祠堂
                 </a-col>
                 <a-col :span="12" class="mt_10">
                     <img src="../../../../static/img/cultural/shiguan.png" alt="">
@@ -29,8 +45,20 @@
                     &nbsp;官署
                 </a-col>
                 <a-col :span="12" class="mt_10">
+                    <img src="../../../../static/img/cultural/huiguan.png" alt="">
+                    &nbsp;会馆
+                </a-col>
+                <a-col :span="12" class="mt_10">
                     <img src="../../../../static/img/cultural/gushumingmu.png" alt="">
                     &nbsp;古树名木
+                </a-col>
+                <a-col :span="12" class="mt_10">
+                    <img src="../../../../static/img/cultural/yuanlin.png" alt="">
+                    &nbsp;园林
+                </a-col>
+                <a-col :span="12" class="mt_10">
+                    <img src="../../../../static/img/cultural/weizhi.png" alt="">
+                    &nbsp;未注明
                 </a-col>
                 <a-col :span="12" class="mt_10">
                     <img src="../../../../static/img/cultural/wenhuayichan.png" alt="">
@@ -98,9 +126,14 @@ export default {
                                     (item.type === '寺庙宫观'?'simiao':
                                     (item.type === '王府'?'wangfu':
                                     (item.type === '使馆'?'shiguan':
-                                    (item.type === '官署'?'guanshu':
-                                    (item.type === '古树名木'?'gushumingmu':
-                                    'wenhuayichan'))))))+".png",
+                                    (item.type === '教堂'?'jiaotang':
+                                    (item.type === '清真寺'?'qingzhensi':
+                                    (item.type === '祠堂'?'citang':
+                                    (item.type === '牌楼'?'paifang':
+                                    (item.type === '会馆'?'huiguan':
+                                    (item.type === '园林'?'yuanlin':
+                                    (item.type === '未注明'?'weizhi':
+                                    (item.type === '官署'?'guanshu':'gushumingmu'))))))))))))+".png",
                                 imageOffset: new AMap.Pixel(0, 0),
                                 imageSize: new AMap.Size(-8, -8)
                             }),
@@ -115,7 +148,7 @@ export default {
         get_statistics_chart_data(){//获取统计图表数据
             this.http.get("culture/getCoverage", {}, res =>{
                 if(res.success){
-                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    var data  = JSON.parse(Decrypt(res.data.results.key));
                     this.get_view_data(data);
                 }
             })
@@ -123,7 +156,7 @@ export default {
         get_view_data(result_data){//格式化数据
             for(var i = 0; i < result_data.length; i++){
                 for(var key in result_data[i]){
-                    this.street_names.push(key);
+                    this.street_names.push(key.replace("街道",""));
                     for(var item in result_data[i][key]){
                         result_data[i][key][item].length > 0?
                             ( item === "architecture" ? this.bar_chart_data["历史建筑"][i] = result_data[i][key][item][0].TOTAL : this.bar_chart_data["物质文化遗产"][i] = result_data[i][key][item][0].TOTAL):"";

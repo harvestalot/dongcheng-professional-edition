@@ -75,8 +75,8 @@ function handleResults (response) {
 }
 
 function handleUrl (url) {
+    // url = "http://au2hbn.natappfree.cc/" + url    
     url = "http://www.igeoai.com:8070/" + url    
-    // url = "http://peking.caupdcloud.com:8081/" + url    
 // BASE_URL是接口的ip前缀，比如http:10.100.1.1:8989/
     return url
 }

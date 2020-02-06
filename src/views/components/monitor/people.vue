@@ -3,12 +3,19 @@
     <div class="main_content">
         <div class="echarts_content animated fadeInRight">
             <div class="echarts_content_sub">
-                
+                <div class="chart_content_box">
+                    <div :id="this.chartOption_1.id" class="h_100"></div>
+                    <!-- <line-area-chart v-if="chartOption_1.isSuccess" :lineAreaChartOption="chartOption_1"></line-area-chart> -->
+                </div>
+                <div class="chart_content_box">
+                    <div :id="this.chartOption_2.id" class="h_100"></div>
+                    <!-- <line-area-chart v-if="chartOption_2.isSuccess" :lineAreaChartOption="chartOption_2"></line-area-chart> -->
+                </div>
             </div>
         </div>
         <div id="timeline" class="timeline">
             <a-row>
-                <a-col :span="1" v-for="(item, index) in time_line_data" :key="index">
+                <a-col :span="1" v-for="(item, index) in time_line_data" :key="index" @click="get_current_time_layer(index, item.time)">
                     <p class="time_line_style">
                         <span :class="{ time_point: item.time_point, current_time_point: item.current_time_point}"></span>
                     </p>
@@ -21,15 +28,20 @@
 
 <script>
 
+import LineAreaChart from "../common/LineAreaChart";
 export default {
-    components: {},
+    components: {
+        LineAreaChart,
+    },
     data() {
         return {
             mainMapLayer: this.$parent.mapLayerOption.base,
             timelineHeatLayer: this.$parent.viewLayerOption.timelineHeat,
+            polygonLayer: this.$parent.viewLayerOption.polygon,
             // time_line_data: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00",
             //     "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
             //     "16:00", "17:00", "18:00", "19:00", "20:00", "11:00", "22:00", "23:00"],
+            current_index: 0,
             currentTime: "00:00",
             time_line_data:[
                 { time: "00:00", time_point : true, current_time_point : false },
@@ -57,23 +69,50 @@ export default {
                 { time: "22:00", time_point : true, current_time_point : false },
                 { time: "23:00", time_point : true, current_time_point : false },
             ],
+            street_names: [],
+            legend_data:["居住人口就业地", "就业人口居住地"],
+            office_residence_ratio_data: [],//职住比
+            line_chart_data: {
+                "居住人口就业地": [],
+                "就业人口居住地": [],
+            },
+            chartOption_1:{
+                isSuccess:false,
+                id: "line_area_chart_content_1",
+                title:"01:00 ~ 12:00时人流量变化",
+                line_name:"崇文门外商圈",
+                xAxis_data:[ "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00",
+                    "08:00", "09:00", "10:00", "11:00", "12:00"],
+                line_series_data:[],
+            },
+            chartOption_2:{
+                isSuccess:false,
+                id: "line_area_chart_content_2",
+                title:"13:00 ~ 24:00时人流量变化",
+                line_name:"崇文门外商圈",
+                xAxis_data:[ "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+                    "20:00", "11:00", "22:00", "23:00", "24:00"],
+                line_series_data:[],
+            }
         };
     },
     computed: {},
     watch: {
     },
     mounted() {
+        this.get_statistics_chart_data();
         this.get_people_activities_layer();
+        this.load_vitality_important_area_layer();
         // this.get_timeline();
         const currentTimeData = this.time_line_data.filter((item) => {
             return item.time === this.currentTime;
         });
         currentTimeData[0].current_time_point = true;
-        var index = 0;
+        // var index = 0;
         this.$Basice.timer = setInterval(() =>{
-            console.log(index)
-            index ++;
-            this.currentTime =  this.time_line_data[index].time;
+            // console.log(index)
+            this.current_index ++;
+            this.currentTime =  this.time_line_data[this.current_index].time;
             this.time_line_data.forEach((item) => {
                 item.current_time_point = false;
             });
@@ -82,10 +121,22 @@ export default {
             });
             currentTimeData[0].current_time_point = true;
             this.get_people_activities_layer();
-            index === 23? index = 0:"";
+            this.current_index === 23? this.current_index = 0 : "";
         }, 5000);
     },
     methods: {
+        get_current_time_layer(index, time){
+            this.current_index = index;
+            this.currentTime = time;
+            this.time_line_data.forEach((item) => {
+                item.current_time_point = false;
+            });
+            const currentTimeData = this.time_line_data.filter((item) => {
+                return item.time === this.currentTime;
+            });
+            currentTimeData[0].current_time_point = true;
+            this.get_people_activities_layer();
+        },
         get_people_activities_layer(){//人口活动热力图层
             this.http.getLocalhostJson("/static/json/monitor/people_activities.csv", res =>{
                 var _this = this;
@@ -124,6 +175,56 @@ export default {
                 });
                 this.timelineHeatLayer.render();
                 this.timelineHeatLayer.show();
+            })
+        },
+        load_vitality_important_area_layer(){//重点活动区域图层
+            const _this = this;
+            this.http.getLocalhostJson("/static/json/monitor/important_culture_area_border_data.json", res =>{
+                this.polygonLayer.setData(res,{lnglat: 'lnglat'});
+                this.polygonLayer.setOptions({
+                    style: {
+                        // opacity: 0.5,
+                        color: function (item) {
+                            var value = item.value.properties.type;
+                            var colors = _this.$Basice.chromatic_gradient;
+                            var color = "";
+                            switch (value){
+                                case "音乐" :
+                                    color = colors[1];
+                                    break;
+                                case (value > 0.51 && value < 0.80) :
+                                    color = colors[2];
+                                    break;
+                                case (value > 0.81 && value < 1.0) :
+                                    color = colors[3];
+                                    break;
+                                case (value > 1.01 && value < 1.20) :
+                                    color = colors[4];
+                                    break;
+                                case (value > 1.21 && value < 1.40) :
+                                    color = colors[5];
+                                    break;
+                                case (value > 1.41 && value < 1.60) :
+                                    color = colors[6];
+                                    break;
+                                case (value > 1.61 && value < 2.24) :
+                                    color = colors[7];
+                                    break;
+                                default:
+                                    color = colors[7];
+                            }
+                            return color;
+                        },
+                    }
+                });
+                this.polygonLayer.render();
+                this.polygonLayer.show();
+                this.polygonLayer.on("click", function(ev){
+                    var name = ev.rawData.properties.name;
+                    _this.chartOption_1.line_name = name;
+                    _this.chartOption_2.line_name = name;
+                    _this.get_view_data(name);
+                })
             })
         },
         get_timeline(){//时间轴
@@ -170,6 +271,100 @@ export default {
                 _this.currentTime = _this.time_line_data[params.currentIndex];
                 _this.get_people_activities_layer();
             })
+        },
+        get_statistics_chart_data(){//获取统计图表数据
+            this.http.get("vitality/getPopulationVitality", {}, res =>{
+                if(res.success){
+                    var data  = JSON.parse(Decrypt(res.data.results.resultKey));
+                    this.visitors_flow_rate_data = data;
+                    this.get_view_data(this.chartOption_1.line_name);
+                }
+            })
+        },
+        get_view_data(name){
+            this.chartOption_1.isSuccess = false;
+            this.chartOption_2.isSuccess = false;
+            const filter_data = this.visitors_flow_rate_data.filter( (item) =>{
+                return item.keyArea === name
+            })
+            var data_1 = [], data_2 = [];
+            for(var i = 0; i < 24; i++){
+                if( 1 <= i && i <= 12){
+                    data_1.push(filter_data[0]["sumPeop" + i]);
+                }else if( 13 <= i && i <= 23){
+                    data_2.push(filter_data[0]["sumPeop" + i]);
+                }
+            }
+            data_2.push(filter_data[0]["sumPeop0"]);
+            this.chartOption_1 = {
+                isSuccess:true,
+                id: "line_area_chart_content_1",
+                title:"01:00 ~ 12:00时人流量变化",
+                line_name: name,
+                xAxis_data:[ "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00",
+                    "08:00", "09:00", "10:00", "11:00", "12:00"],
+                line_series_data: data_1,
+            }
+            this.chartOption_2 = {
+                isSuccess:true,
+                id: "line_area_chart_content_2",
+                title:"13:00 ~ 24:00时人流量变化",
+                line_name: name,
+                xAxis_data:[ "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00",
+                    "20:00", "11:00", "22:00", "23:00", "24:00"],
+                line_series_data: data_2,
+            }
+            this.load_line_chart(this.chartOption_1)
+            this.load_line_chart(this.chartOption_2)
+        },
+        load_line_chart(lineChartOption){
+            var lineChart = echarts.init(document.getElementById(lineChartOption.id));
+            var line_option = {
+                color: this.$Basice.colors,
+                title:{ ...{
+                    text: lineChartOption.line_name + lineChartOption.title,
+                }, ...this.$Basice.echart_title},
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer : {            
+                        type : 'shadow'       
+                    }
+                },
+                // legend: { 
+                //     ...{ data: this.lenged_data},
+                //     ...this.$Basice.legend
+                // },
+                grid: { ...this.$Basice.grid, ...{ left: 60 }},
+                xAxis: {
+                    type : 'category',
+                    data: lineChartOption.xAxis_data,
+                    axisLabel: { ...this.$Basice.coordinate_axis_style.axisLabel, 
+                        ...{formatter:function(val){
+                                return val.split("").join("\n");
+                            }
+                        }
+                    },
+                    axisLine: this.$Basice.coordinate_axis_style.axisLine,
+                    splitLine: this.$Basice.coordinate_axis_style.splitLine,
+                },
+                yAxis: { ...{
+                    type : 'value',
+                    name: '数量',
+                }, ...this.$Basice.coordinate_axis_style},
+                series: [
+                    {
+                        name: lineChartOption.line_name,
+                        type: 'line',
+                        stack: 'a',
+                        barCategoryGap:5,
+                        data: lineChartOption.line_series_data
+                    }
+                ]
+            };
+            lineChart.setOption(line_option, true);
+            window.onresize = function(){
+                lineChart.resize();
+            }
         }
     },
     created() {},

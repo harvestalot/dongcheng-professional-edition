@@ -1,5 +1,5 @@
 export default {
-    data_server_url : "http://114.64.228.103:8902/",
+    // data_server_url : "http://114.64.228.103:8902/",
     reachability_url: "http://114.64.228.103/reachcircle/walkServlet",//可达性覆盖范围服务地址
     icon_url: "http://www.igeoai.com:8089/professional/",
     timer:"",
@@ -27,7 +27,7 @@ export default {
         show: true,
         icon:"circle",
         // left:10,
-        top:40,
+        top: 35,
         textStyle: {
             fontSize: 12,
             color: "#222"

@@ -33,17 +33,33 @@ export default {
 	        current_pio_type: "餐饮服务",
             chartOption:{
                 isSuccess:false,
-                title_1:"各街道各类个数统计",
+                title_1:"各街道类型个数对比图",
+                radar_radius:"40%",
                 street_name_data: [],
                 radar_chart_indicator_data: [],
-                lenged_data: ["超市", "菜站"],
+                lenged_data: ["餐饮服务", "购物服务", "生活服务", "体育休闲服务",
+		        "商务住宅", "科教文化服务", "交通设施服务", "金融保险服务", "公共设施"],
                 legend_selected:{
-                    '超市': true,
-                    '菜站': false,
+                    '餐饮服务': true,
+                    '购物服务': false,
+                    '生活服务': false,
+                    '体育休闲服务': false,
+                    '商务住宅': false,
+                    '科教文化服务': false,
+                    '交通设施服务': false,
+                    '金融保险服务': false,
+                    '公共设施': false,
                 },
                 pie_comprehensive_data: {
-                    "超市":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                    "菜站":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "餐饮服务":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "购物服务":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "生活服务":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "体育休闲服务":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "商务住宅":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "科教文化服务":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "交通设施服务":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "金融保险服务":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    "公共设施":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
                 },
             },
         };
@@ -88,28 +104,36 @@ export default {
             })
         },
         get_aggregation_degree_statistics(){//各街道产业数量统计
-            this.http.get("Coverage/getCoverageByCategory", { category: "convenient" }, res =>{
+            this.http.get("Enterprise/getIndustrialAgglomeration", { }, res =>{
                 if(res.success){
-                    var data  = JSON.parse(Decrypt(res.data.results.coverageKey));
+                    var data  = JSON.parse(Decrypt(res.data.results.key));
                     this.get_view_data(data);
                 }
             })
         },
         get_view_data(result_data){
+            const lenged_english_data = {
+                "restaurantService": "餐饮服务",
+                "shoppingService": "购物服务",
+                "lifeService": "生活服务",
+                "sportService": "体育休闲服务",
+                "businessResidence" : "商务住宅",
+                "culturalService" : "科教文化服务",
+                "transportService" : "交通设施服务",
+                "financialService" : "金融保险服务",
+                "publicFacilities" : "公共设施"
+            };
             for(var i = 0; i < result_data.length; i++){
-                for(var key in result_data[i]){
-                    this.chartOption.street_name_data.push(key.replace("街道",""));
-                    this.chartOption.radar_chart_indicator_data.push({
-                        name: key.replace("街道",""),
-                        max:100,
-                        color:'#222',
-                        rotate:90
-                    })
-                    if(result_data[i][key].length > 0){
-                        for(var j = 0; j < result_data[i][key].length; j++){
-                            this.chartOption.pie_comprehensive_data[result_data[i][key][j].CATEGORY_NAME][i] = result_data[i][key][j].COVERAGE.toFixed(2);
-                        }
-                    }
+                var item = result_data[i];
+                this.chartOption.street_name_data.push(item.name.replace("街道",""));
+                this.chartOption.radar_chart_indicator_data.push({
+                    name: item.name.replace("街道",""),
+                    // max:100,
+                    color:'#222',
+                    rotate:90
+                })
+                for(var key in lenged_english_data){
+                    this.chartOption.pie_comprehensive_data[lenged_english_data[key]][i] = item[key];
                 }
                 this.chartOption.isSuccess = true;
             }
