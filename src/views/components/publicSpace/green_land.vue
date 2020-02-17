@@ -58,6 +58,7 @@ export default {
     computed: {},
     watch: {},
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_green_land_coverage();
         this.get_green_land_layer();
     },

@@ -72,6 +72,7 @@ export default {
     computed: {},
     watch: {},
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_cultural_activities_coverage();
         this.get_cultural_activities_layer();
     },

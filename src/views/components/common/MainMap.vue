@@ -4,6 +4,31 @@
         <div id="main_map" class="w_100 h_100"></div>
         <slot :map="mapLayerOption"></slot>
         <tool :toolOption="toolOption" v-if="toolOption.isConfig"></tool>
+        <div id="land_legend_content" class="land_legend_content" v-show="is_land_legend">
+            <a-row>
+                <a-col :span="12" class="land_legend">
+                    <span></span>&nbsp;&nbsp;居住用地
+                </a-col>
+                <a-col :span="12" class="land_legend">
+                    <span></span>&nbsp;&nbsp;工业用地
+                </a-col>
+                <a-col :span="24" class="mt_10 land_legend ">
+                    <span></span>&nbsp;&nbsp;商业服务业设施用地
+                </a-col>
+                <a-col :span="24" class="mt_10 land_legend">
+                    <span></span>&nbsp;&nbsp;公共管理与公共服务用地
+                </a-col>
+                <a-col :span="24" class="mt_10 land_legend">
+                    <span></span>&nbsp;&nbsp;公用设施用地
+                </a-col>
+                <a-col :span="24" class="mt_10 land_legend">
+                    <span></span>&nbsp;&nbsp;物流仓储用地
+                </a-col>
+                <a-col :span="24" class="mt_10 land_legend">
+                    <span></span>&nbsp;&nbsp;未知用地
+                </a-col>
+            </a-row>
+        </div>
     </div>
 </template>
 
@@ -16,6 +41,7 @@ export default {
     },
     data() {
         return {
+            is_land_legend:false,
             mapLayerOption:{
                 base:"",
                 streetArea:"",
@@ -53,7 +79,7 @@ export default {
                 resizeEnable:true,
                 center: [116.412255,39.908886],
                 zoom: 12,
-                zooms: [12, 13]
+                // zooms: [12, 13]
             });
             this.init_layer();
         },
@@ -235,7 +261,15 @@ export default {
                 this.mapLayerOption.streetBoundary.hide();
                 this.mapLayerOption.streetName.hide();
             }
-            this.toolOption.tool_checked.indexOf("land") > -1? this.get_street_land_layer(): this.mapLayerOption.streetLand.hide();
+            if(this.toolOption.tool_checked.indexOf("land") > -1){
+                this.get_street_land_layer();
+                this.is_land_legend = true;
+            }else{
+                this.mapLayerOption.streetLand.hide();
+                this.is_land_legend = false;
+            }
+            
+            // this.toolOption.tool_checked.indexOf("land") > -1? this.get_street_land_layer(): this.mapLayerOption.streetLand.hide();
             // this.toolOption.tool_checked.indexOf("street") > -1? : 
             this.toolOption.tool_checked.indexOf("road") > -1? this.get_street_road_layer(): this.mapLayerOption.streetRoad.hide();
         },

@@ -5,21 +5,28 @@
             <div class="echarts_content_sub">
                 <div class="chart_content_box">
                     <div :id="this.chartOption_1.id" class="h_100"></div>
-                    <!-- <line-area-chart v-if="chartOption_1.isSuccess" :lineAreaChartOption="chartOption_1"></line-area-chart> -->
                 </div>
                 <div class="chart_content_box">
                     <div :id="this.chartOption_2.id" class="h_100"></div>
-                    <!-- <line-area-chart v-if="chartOption_2.isSuccess" :lineAreaChartOption="chartOption_2"></line-area-chart> -->
                 </div>
+                <div class="source_content">注：点击所选重点区域，右侧将显示该区域.24小时人流量变化情况</div>
             </div>
         </div>
         <div id="timeline" class="timeline">
             <a-row>
-                <a-col :span="1" v-for="(item, index) in time_line_data" :key="index" @click="get_current_time_layer(index, item.time)">
-                    <p class="time_line_style">
-                        <span :class="{ time_point: item.time_point, current_time_point: item.current_time_point}"></span>
-                    </p>
-                    {{ item.time }}
+                <a-col :span="1">
+                    <div class="timeline_control" @click="handle_timeline_control" v-if="!isPlayInterval"><img src="../../../../static/img/monitor/bofang.png" alt=""></div>
+                    <div class="timeline_control" @click="handle_timeline_control" v-else><img src="../../../../static/img/monitor/zanting.png" alt=""></div>
+                </a-col>
+                <a-col :span="23">
+                    <a-row>
+                        <a-col :span="1" v-for="(item, index) in time_line_data" :key="index" @click="get_current_time_layer(index, item.time)">
+                            <p class="time_line_style">
+                                <span :class="{ time_point: item.time_point, current_time_point: item.current_time_point}"></span>
+                            </p>
+                            {{ item.time }}
+                        </a-col>
+                    </a-row>
                 </a-col>
             </a-row>
         </div>
@@ -41,6 +48,9 @@ export default {
             // time_line_data: ["00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00",
             //     "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00",
             //     "16:00", "17:00", "18:00", "19:00", "20:00", "11:00", "22:00", "23:00"],
+            isPlayInterval:false,
+            timeline_control_icon_1: "../../../../static/img/monitor/bofang.png",
+            timeline_control_icon_2: "../../../../static/img/monitor/zanting.png",
             current_index: 0,
             currentTime: "00:00",
             time_line_data:[
@@ -100,6 +110,7 @@ export default {
     watch: {
     },
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_statistics_chart_data();
         this.get_people_activities_layer();
         this.load_vitality_important_area_layer();
@@ -109,22 +120,46 @@ export default {
         });
         currentTimeData[0].current_time_point = true;
         // var index = 0;
-        this.$Basice.timer = setInterval(() =>{
-            // console.log(index)
-            this.current_index ++;
-            this.currentTime =  this.time_line_data[this.current_index].time;
-            this.time_line_data.forEach((item) => {
-                item.current_time_point = false;
-            });
-            const currentTimeData = this.time_line_data.filter((item) => {
-                return item.time === this.currentTime;
-            });
-            currentTimeData[0].current_time_point = true;
-            this.get_people_activities_layer();
-            this.current_index === 23? this.current_index = 0 : "";
-        }, 5000);
+        // this.$Basice.timer = setInterval(() =>{
+        //     // console.log(index)
+        //     this.current_index ++;
+        //     this.currentTime =  this.time_line_data[this.current_index].time;
+        //     this.time_line_data.forEach((item) => {
+        //         item.current_time_point = false;
+        //     });
+        //     const currentTimeData = this.time_line_data.filter((item) => {
+        //         return item.time === this.currentTime;
+        //     });
+        //     currentTimeData[0].current_time_point = true;
+        //     this.get_people_activities_layer();
+        //     this.current_index === 23? this.current_index = 0 : "";
+        // }, 5000);
     },
     methods: {
+        handle_timeline_control(){//操作时间轴暂停和开始
+            this.isPlayInterval = !this.isPlayInterval;
+            if(this.isPlayInterval){
+                this.paly_timeline()
+            }else{
+                window.clearInterval(this.$Basice.timer);
+            }
+        },
+        paly_timeline(){
+            this.$Basice.timer = setInterval(() =>{
+                // console.log(index)
+                this.current_index ++;
+                this.currentTime =  this.time_line_data[this.current_index].time;
+                this.time_line_data.forEach((item) => {
+                    item.current_time_point = false;
+                });
+                const currentTimeData = this.time_line_data.filter((item) => {
+                    return item.time === this.currentTime;
+                });
+                currentTimeData[0].current_time_point = true;
+                this.get_people_activities_layer();
+                this.current_index === 23? this.current_index = 0 : "";
+            }, 3000);
+        },
         get_current_time_layer(index, time){
             this.current_index = index;
             this.currentTime = time;
@@ -239,7 +274,7 @@ export default {
                     // loop: false,
                     autoPlay: true,
                     // currentIndex: 0,
-                    playInterval: 5000,
+                    playInterval: 3000,
                     controlStyle: {
                         position:"right",
                         showNextBtn: false,
@@ -371,5 +406,11 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-
+    .chart_content_box{
+        height: 47%;
+    }
+    .source_content{
+        padding-right: 15px;
+        font-size: 12px;
+    }
 </style>

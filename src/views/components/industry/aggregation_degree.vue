@@ -67,6 +67,7 @@ export default {
     computed: {},
     watch: {},
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_aggregation_degree_statistics();
         this.get_dongcheng_polygon_layer();
     },

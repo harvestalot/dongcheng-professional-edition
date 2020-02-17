@@ -148,6 +148,19 @@ a {
     color: #F0B33C;
     text-align: center;
 }
+.timeline_control{
+    width: 24px;
+    height: 24px;
+    margin: 18px 0;
+    cursor: pointer;
+}
+.timeline_control img{
+    width: 100%;
+    height: 100%;
+}
+.timeline .ant-col-1{
+    font-size: 12px;
+}
 .time_line_style{
     position: relative;
     height: 2px;
@@ -177,7 +190,7 @@ a {
     height: 50%;
 }
 .source_content{
-    height: 3%;
+    height: 5%;
     padding-left: 30px;
     color: #666;
 }
@@ -235,4 +248,42 @@ a {
 }
 .info_window{
     margin: 10px 10px;
+}
+/* 用地图例 */
+.land_legend_content{
+    position: absolute;
+    right: 25.5%;
+    bottom: 5px;
+    width: 215px;
+    padding: 10px;
+    background-color: rgba(255,255,255,0.8);
+    box-shadow: 0px 0px 8px 0px rgba(188, 142, 94, 1);
+    color: #222;
+    font-size: 12px;
+}
+.land_legend span{
+    display: inline-block;
+    width: 30px;
+    height: 12px;
+}
+.land_legend:nth-child(1) span{
+    background-color: #FF0000;
+}
+.land_legend:nth-child(2) span{
+    background-color: #0084A8;
+}
+.land_legend:nth-child(3) span{
+    background-color: #FFFF00;
+}
+.land_legend:nth-child(4) span{
+    background-color: #730000;
+}
+.land_legend:nth-child(5) span{
+    background-color: #9C9C9C;
+}
+.land_legend:nth-child(6) span{
+    background-color: #FFAA00;
+}
+.land_legend:nth-child(7) span{
+    background-color: #A900E6;
 }

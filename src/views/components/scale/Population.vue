@@ -75,6 +75,7 @@ export default {
     methods: {},
     created() {},
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  false});
         this.get_statistics_chart_data();
     },
     methods:{
@@ -428,7 +429,7 @@ export default {
 </script>
 <style lang='less' scoped>
     .chart_content_box{
-        height: 48.5%;
+        height: 47.5%;
     }
     // .slide-fade-enter-active {
     //     transition: all .3s ease;

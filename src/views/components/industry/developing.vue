@@ -100,6 +100,7 @@ export default {
     watch: {},
     created() {},
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_company_data();
     },
     methods: {

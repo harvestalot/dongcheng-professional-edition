@@ -42,6 +42,7 @@ export default {
     computed: {},
     watch: {},
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_Hutong_sanitation_data();
         this.get_Hutong_sanitation_layer();
     },

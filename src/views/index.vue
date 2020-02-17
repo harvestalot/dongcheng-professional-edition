@@ -15,7 +15,7 @@
                         </div>
                     </a-col>
                     <a-col :span="6">
-                        <h1 class="title">东城区体检平台(专业版)</h1>
+                        <h1 class="title">东城区街区更新平台专业版</h1>
                     </a-col>
                     <a-col :span="6" class="h_100">
                         <nav id="nav" class="nav">
@@ -89,8 +89,10 @@ export default {
             document.getElementById("views").style.overflow = "hidden";
             if(this.$route.name === "Home" || this.$route.name === "RoadConditionTraffic"){
                 document.getElementById("map_tool").style.right = "5px";
+                document.getElementById("land_legend_content").style.right = "5px";
             }else{
                 document.getElementById("map_tool").style.right = "25.5%";
+                document.getElementById("land_legend_content").style.right = "25.5%";
             }
             window.clearInterval(this.$Basice.timer);
             this.$refs.mainMapChild.mapLayerOption.base.clearMap();//重置地图

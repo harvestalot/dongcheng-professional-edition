@@ -58,6 +58,7 @@ export default {
     computed: {},
     watch: {},
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.heatLayer? this.heatLayer.hide():"";
         this.polygonLayer? this.polygonLayer.hide():"";
         this.trafficLayer? this.trafficLayer.hide():"";

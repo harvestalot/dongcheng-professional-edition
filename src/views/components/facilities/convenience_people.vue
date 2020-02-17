@@ -64,6 +64,7 @@ export default {
     computed: {},
     watch: {},
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_convenience_people_facilities_coverage();
         this.get_convenience_people_layer();
     },

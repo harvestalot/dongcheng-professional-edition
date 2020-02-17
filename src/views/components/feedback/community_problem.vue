@@ -33,6 +33,7 @@ export default {
     components: {},
     data() {
         return {
+            mainMapLayer: this.$parent.mapLayerOption.base,
             heatLayer: this.$parent.viewLayerOption.heat,
             social_public_opinion_type_data: [],
             type_name:"街面秩序",
@@ -108,7 +109,7 @@ export default {
         this.get_community_problem_data()
     },
     mounted() {
-        
+        this.mainMapLayer.setStatus({zoomEnable :  true});
     },
 }
 </script>

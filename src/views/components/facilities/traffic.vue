@@ -69,6 +69,7 @@ export default {
     computed: {},
     watch: {},
     created() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_traffic_facilities_coverage();
         this.get_traffic_layer();
     },

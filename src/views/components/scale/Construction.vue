@@ -100,6 +100,7 @@ export default {
     created() {
     },
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  false});
         this.get_statistics_chart_data();
     },
     methods:{
@@ -399,6 +400,6 @@ export default {
 </script>
 <style lang='less' scoped>
     .main_content .echarts_content_sub{
-        height: 97%;
+        height: 95%;
     }
 </style>

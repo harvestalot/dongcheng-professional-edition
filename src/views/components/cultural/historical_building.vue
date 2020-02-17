@@ -143,6 +143,7 @@ export default {
     computed: {},
     watch: {},
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_historical_building_layer();
         this.get_historical_building_coverage();
     },

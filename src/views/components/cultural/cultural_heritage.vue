@@ -50,6 +50,7 @@ export default {
     computed: {},
     watch: {},
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_statistics_chart_data();
         this.get_cultural_heritage_layer();
     },

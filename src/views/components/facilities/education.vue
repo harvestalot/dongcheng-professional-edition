@@ -77,6 +77,7 @@ export default {
     computed: {},
     watch: {},
     mounted() {
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_education_facilities_coverage();
         this.get_education_layer();
     },
