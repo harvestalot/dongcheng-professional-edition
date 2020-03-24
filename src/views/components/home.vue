@@ -10,6 +10,7 @@ export default {
     components: {},
     data() {
         return {
+            mainMapLayer: this.$parent.mapLayerOption.base,
         };
     },
     computed: {},
@@ -17,7 +18,7 @@ export default {
     created() {
     },
     mounted() {
-        // this.get_init_layer();
+        this.mainMapLayer.setStatus({zoomEnable :  true});
     },
     methods: {
         get_init_layer(){

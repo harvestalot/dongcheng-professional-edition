@@ -38,13 +38,16 @@
         <a-row class="h_8 footer">
             <img src="../../static/img/logo-bottom.png" alt="">
             <router-link :to="{ name: 'AboutUs' }" class="about_us">关于我们</router-link>
+            <!-- <div class="user_access">
+                <span>访问者总数：<span class="number">{{ views_number.user_views }}</span></span>&nbsp;&nbsp;
+                <span>页面浏览总量：<span class="number">{{ views_number.total_user_number }}</span></span>
+            </div> -->
         </a-row>
         <a-modal v-model="introduction_visible" centered :footer="null" width="70%">
             <div class="introduction_content">
                 <h1 class="introduction_title">简介</h1>
-                <p>东城区，隶属于北京市，地处北京市中心城区的东部，东、北与朝阳区接壤，南与丰台区相连，西与西城区毗邻，介于东经116°22'17"—116°26'46"，北纬39°51'26"—39°58'22"之间，东西最大距离5.2千米，南北最大距离13千米，总面积41.84平方千米。</p>
-                <p>东城区是北京文物古迹最为集中的区域，拥有国家级文物保护单位16处，市级文物保护单位60处，北京市历史文化保护区18.5片。</p>
-                <p>2018年，东城区下辖17个街道，常住人口82.2万人，实现地区生产总值（GDP）2425.7亿元，其中，第二产业实现增加值89.6亿元，第三产业实现增加值2336.1亿元，按常住人口计算，全区人均地区生产总值达到29万元（按年平均汇率折合4.4万美元）。</p>
+                <p class="text_indent">东城区地处北京市中心城区的东部，东、北与朝阳区接壤，南与丰台区相连，西与西城区毗邻，东西最大距离5.2公里，南北最大距离13公里，总面积41.84平方公里。2018年，东城区下辖17个街道，常住人口82.2万人，是北京文物古迹最为集中的区域。辖区内拥有国家级文物保护单位16处，占北京市的37%；市级文物保护单位60处，占全市的24%；区级文物保护单位57处。东城区历史街区有18.5片，面积达10.35平方公里，占全区总面积的1/4，是全市历史文化街区最多的地区。</p>
+                <p class="text_indent">本系统是对东城区街区更新的专业化解读。</p>
             </div>
           
         </a-modal>
@@ -70,6 +73,10 @@ export default {
             isRouterAlive:true,
             spinning:true,
             introduction_visible: false,
+            views_number : {
+                user_views: 0,
+                total_user_number: 0
+            }
         };
     },
     computed: {
@@ -86,6 +93,7 @@ export default {
     }, 
     methods: {
         resetMap(){
+            this.get_page_views();
             document.getElementById("views").style.overflow = "hidden";
             if(this.$route.name === "Home" || this.$route.name === "RoadConditionTraffic"){
                 document.getElementById("map_tool").style.right = "5px";
@@ -111,6 +119,17 @@ export default {
         },
         go_home(){
             window.location.href= 'http://peking.caupdcloud.com/';
+        },
+        get_page_views(){
+            this.http.getViews({ data:  { userIp: returnCitySN["cip"] } }, res =>{
+                if(res.resultCode === "10000"){
+                    var data = JSON.parse(Decrypt(res.data.resultKey));
+                    this.views_number = {
+                        user_views: data.USER_NUMBER,
+                        total_user_number: data.VIEW_NUMBER
+                    }
+                }
+            })
         }
     }
 };
@@ -172,7 +191,7 @@ export default {
 }
 .about_us{
 	position: absolute;
-	right: 150px;
+	right: 50px;
 	top: 50%;
 	width: 120px;
 	height: 26px;
@@ -188,11 +207,16 @@ export default {
 	color: #f0b33c;
 }
 .user_access{
-	position: absolute;
-	right: 10px;
-	bottom: 10px;
+    position: absolute;
+    top: 50%;
+    right: 300px;
+    margin-top: -10px;
 	color: #666;
 	font-size: 14px;
+}
+.user_access .number{
+    font-size: 16px;
+    color: #f0b33c;
 }
 </style>
 <style >

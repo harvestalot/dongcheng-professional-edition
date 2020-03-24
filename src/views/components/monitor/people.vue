@@ -50,7 +50,7 @@ export default {
             //     "16:00", "17:00", "18:00", "19:00", "20:00", "11:00", "22:00", "23:00"],
             isPlayInterval:false,
             timeline_control_icon_1: "../../../../static/img/monitor/bofang.png",
-            timeline_control_icon_2: "../../../../static/img/monitor/zanting.png",
+            timeline_control_icon_2: "../../../../static/img/monitor/zantin\g.png",
             current_index: 0,
             currentTime: "00:00",
             time_line_data:[

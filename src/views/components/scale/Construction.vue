@@ -100,7 +100,7 @@ export default {
     created() {
     },
     mounted() {
-        this.mainMapLayer.setStatus({zoomEnable :  false});
+        this.mainMapLayer.setStatus({zoomEnable :  true});
         this.get_statistics_chart_data();
     },
     methods:{

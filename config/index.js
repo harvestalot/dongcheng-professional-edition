@@ -56,7 +56,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../professional'),
     assetsSubDirectory: 'static',
     // assetsPublicPath: './',
-    assetsPublicPath: 'http://www.igeoai.com:8089/professional/',
+    assetsPublicPath: 'http://114.64.228.104/professional/',
 
     /**
      * Source Maps

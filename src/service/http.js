@@ -76,7 +76,7 @@ function handleResults (response) {
 
 function handleUrl (url) {
     // url = "http://au2hbn.natappfree.cc/" + url    
-    url = "http://www.igeoai.com:8070/" + url    
+    url = "http://114.64.228.104:8901/" + url    
 // BASE_URL是接口的ip前缀，比如http:10.100.1.1:8989/
     return url
 }
@@ -101,6 +101,28 @@ export default {
         axios({
             method: 'get',
             url: process.env.NODE_ENV === "production"? "/professional" + url: url,
+        }).then(
+            (result) => {
+                response(result.data)
+            }
+        ).catch(
+            (error) => {
+                if (exception) {
+                    exception(error)
+                }
+            }
+        )
+    },
+    /*
+        获取浏览量
+     * @param response 请求成功时的回调函数
+     * @param exception 异常的回调函数
+     */
+    getViews(data, response, exception){
+        axios({
+            method: 'post',
+            url: "http://114.64.228.104:8081/UserView/refreshUserView",
+            params: handleParams(data),
         }).then(
             (result) => {
                 response(result.data)

@@ -51,6 +51,9 @@ a {
 .ft_16{
     font-size: 16px;
 }
+.text_indent{
+    text-indent: 2em;
+}
 /* 右侧可视化图表盒子 */
 .main_content{
     position: absolute;
